@@ -17,4 +17,8 @@ class Order extends Model
     public function cryptos(){
         return $this->belongsToMany(Crypto::class);
     }
+
+    public function depositWithdraw(){
+        return $this->belongsToMany(DepositWithdraw::class);
+    }
 }

@@ -11,4 +11,8 @@ class WayOfHistorie extends Model
     public function marketplace(){
         return $this->belongsTo(Marketplace::class);
     }
+
+    public function transaktions(){
+        return $this->belongsToMany(Transaktion::class,'crypto_historie_way_transaktion','transaktion_id','crypto_historie_id');
+    }
 }

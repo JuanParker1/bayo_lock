@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CryptoHistories extends Migration
+class CryptoTransaktion extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CryptoHistories extends Migration
      */
     public function up()
     {
-        Schema::create('crypto_histories', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('crypto_transaktion', function (Blueprint $table) {
             $table->unsignedInteger('crypto_id');
-            $table->decimal('fees');
-            $table->decimal('purchase_price');
-           $table->unsignedInteger('marketplace_id');
+            $table->unsignedInteger('transaktion_id');
 
-            $table->foreign('marketplace_id')->references('id')->on('marketplaces');
+            $table->foreign('transaktion_id')->references('id')->on('transaktions');
             $table->foreign('crypto_id')->references('id')->on('cryptos');
         });
     }
