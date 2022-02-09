@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Wallet extends Migration
+class TransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,7 @@ class Wallet extends Migration
      */
     public function up()
     {
-        Schema::create('wallets', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-        });
+        //
     }
 
     /**

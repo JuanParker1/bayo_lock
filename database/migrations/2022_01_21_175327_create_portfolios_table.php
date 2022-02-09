@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Cryptos extends Migration
+class CreatePortfoliosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class Cryptos extends Migration
      */
     public function up()
     {
-        Schema::create('cryptos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('order_id');
-            $table->string('crypto_api_id');
-            $table->integer('amount');
-            $table->string('current_location');
+        Schema::create('portfolios', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
-
-            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 
@@ -32,6 +26,6 @@ class Cryptos extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('portfolios');
     }
 }

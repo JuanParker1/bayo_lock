@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customer extends Model
+class Portfolio extends Model
 {
     use HasFactory;
 
-    public function order()
-    {
-        return $this->hasOne(Order::class);
+    public function cryptos(){
+       return $this->hasMany(Historie::class);
     }
 }

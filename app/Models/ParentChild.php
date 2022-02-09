@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Marketplace extends Model
+class ParentChild extends Model
 {
     use HasFactory;
+    protected $table = 'parent_child';
 
-    public function wayOfHistories(){
-        return $this->belongsToMany(WayOfHistorie::class);
-    }
 }
