@@ -13,7 +13,16 @@ class PurchasesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('purchases', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->string('amount');
+            $table->string('fees')->default('0');
+            $table->string('crypto_id');
+            $table->string('purchase_price_euro');
+            $table->string('used_amount');
+            $table->string('currency');
+        });
     }
 
     /**

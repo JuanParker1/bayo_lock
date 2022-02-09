@@ -13,7 +13,14 @@ class TransactionsTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('transaktions', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->string('amount');
+            $table->string('fees')->default('0');
+            $table->string('where');
+            $table->string('network');
+        });
     }
 
     /**
