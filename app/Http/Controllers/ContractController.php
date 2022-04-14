@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use App\Models\Investor;
 use App\Models\Trade;
+use App\Services\CryptoService;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
@@ -11,22 +13,20 @@ class ContractController extends Controller
     public function show($contract_id)
     {
         $contract = Contract::find($contract_id);
-        $trades = $contract->trades()->orderBy('currency')->get();
 
-        $previous = null;
-        $tradesList = [];
-
-        foreach ($trades as $trade) {
-            if (isset($previous) and $trade->currency == $previous->currency) $previous['total-currency'] += $trade['total-currency'];
-
-            $previous = ((!isset($previous) or $trade->currency != $previous->currency) ? $trade : $previous);
-            if (!in_array($previous, $tradesList)) array_push($tradesList, $previous);
-        }
+        // fasse alle crypto mit dem selbigen ID's zusammen.
+        // dabei setze die crypto classen zusammen beo
+         $trades = (new CryptoService)->groupByCryptoId($contract->trades);
 
         return view('contract.show', [
             'contract' => $contract,
-            'trades' => $tradesList,
+            'trades' => $trades
         ]);
+    }
+
+    public function create()
+    {
+        return view('contract.create');
     }
 
     public function createTrade($contract_id)
@@ -49,5 +49,21 @@ class ContractController extends Controller
         ]);
 
         $contract->trades()->attach($trade);
+    }
+
+    public function extend($contract_id, $investor_id)
+    {
+        $investor = Investor::find($investor_id);
+
+        return view('contract.extend')->with([
+            'investor' => $investor,
+            'contract' => $investor->contracts->find($contract_id)
+        ]);
+    }
+
+    public function destory($id,$investorId)
+    {
+        Contract::find($id)->delete();
+        return redirect('/investor/'.$investorId);
     }
 }
