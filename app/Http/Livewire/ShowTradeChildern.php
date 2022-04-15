@@ -10,10 +10,10 @@ class ShowTradeChildern extends Component
     public $ids;
     public $collective;
 
-//    public function mount()
-//    {
-//        $this->collective = Trade::find($this->ids);
-//    }
+    public function mount()
+    {
+        $this->collective = Trade::find($this->ids);
+    }
 
     public function render()
     {
