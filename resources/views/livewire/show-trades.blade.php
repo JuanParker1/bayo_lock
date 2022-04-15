@@ -78,51 +78,71 @@
         bottom: -14px;
         border-radius: 25px;
     }
-    .trade-viewer{
+
+    .trade-viewer {
         width: 95vw;
         display: flex;
         justify-content: center;
         margin-bottom: 45px;
     }
 </style>
-<div class="trade-viewer">
-    <!-- tr wrappes all .card-block -->
-    <div class="card-wrapper">
+<div>
+    <div class="trade-viewer">
+        <!-- tr wrappes all .card-block -->
+        <div class="card-wrapper">
 
-        <!-- single block! -->
-        <div class="card-block {!! $trade['class'] !!}">
-            <div class="item1"></div>
-            <div class="icon">
-                <img src="{{ $trade['img']['small'] }}">
+            <!-- single block! -->
+            <div class="card-block {!! $trade['class'] !!}">
+                <div class="item1"></div>
+                <div class="icon">
+                    <img src="{{ $trade['img']['small'] }}">
+                </div>
+                <div class="text">
+                    <h3>{!! $trade['name'] !!}</h3>
+                </div>
+                <div class="item1"></div>
             </div>
-            <div class="text">
-                <h3>{!! $trade['name'] !!}</h3>
+
+            <div class="card-block {!! $trade['class'] !!}">
+                <div class="item1"></div>
+                <div class="icon">Order date</div>
+                <div class="text">{!! date('d M. Y' ,strtotime($trade['orderDay'])) !!}</div>
+                <div class="item1"></div>
             </div>
-            <div class="item1"></div>
-        </div>
 
-        <div class="card-block {!! $trade['class'] !!}">
-            <div class="item1"></div>
-            <div class="icon">Order date</div>
-            <div class="text">{!! date('d M. Y' ,strtotime($trade['orderDay'])) !!}</div>
-            <div class="item1"></div>
-        </div>
+            <!-- crypto amount -->
+            <div class="card-block {!! $trade['class'] !!}">
+                <div class="item1"></div>
+                <div class="icon">Amount</div>
+                <div class="text">{!! round($trade['totalCurrency']) !!} amt.</div>
+                <div class="item1"></div>
+            </div>
 
-        <!-- crypto amount -->
-        <div class="card-block {!! $trade['class'] !!}">
-            <div class="item1"></div>
-            <div class="icon">Amount</div>
-            <div class="text">{!! round($trade['totalCurrency']) !!} amt.</div>
-            <div class="item1"></div>
-        </div>
-
-        <!-- action button -->
-        <div class="card-block-actions {!! $trade['class'] !!}">
-            <div class="action1">1</div>
-            <div class="action2">2</div>
-            <div class="action3">3</div>
-            <div class="action4">4</div>
+            <!-- action button -->
+            <div class="card-block-actions {!! $trade['class'] !!}">
+                <div class="action1">1</div>
+                <div class="action2">2</div>
+                <div class="action3">3</div>
+                @if($trade['isCollective'])
+                    <div class="action4">
+                        <button class="btn{{ $trade['name'] }}">
+                            show collective {{ $showCollective }}
+                        </button>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
+
+    <!-- collective-children -->
+    <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>
+    @if($trade['isCollective'])
+        <script>
+            document.querySelector(".btn{{ $trade['name'] }}")
+                .addEventListener('click', function (event) {
+                    @this.extend();
+                });
+        </script>
+    @endif
 </div>
 
