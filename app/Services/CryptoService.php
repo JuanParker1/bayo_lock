@@ -24,14 +24,16 @@ class CryptoService
 
         foreach ($trades->groupBy('cryptocurrency_id') as $trade) {
             $array[$trade[0]->cryptocurrency->crypto_id] = [
+                'id' => $trade[0]->id,
                 'summed' => $trade->sum('total-currency'),
                 'name' => $trade[0]->cryptocurrency->name,
                 'cryptoId' => $trade[0]->cryptocurrency->crypto_id,
                 'currencySinglePrice' => $trade[0]['currency-single-price'],
                 'totalCurrency' => $trade[0]['total-currency'],
                 'orderDay' => $trade[0]['order-day'],
-                'collectionSampler' => count($trade) > 1 ? $trade : [],
+//                'collectionSampler' => count($trade) > 1 ? $trade : [],
                 'isCollective' => count($trade) > 1,
+                'collectiveIds' => $trade->pluck('id')->toArray(),
                 'countOfCollective' => count($trade),
             ];
 
