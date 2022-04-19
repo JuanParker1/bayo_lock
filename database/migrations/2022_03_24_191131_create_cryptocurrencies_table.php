@@ -18,6 +18,7 @@ class CreateCryptocurrenciesTable extends Migration
             $table->string('crypto_id');
             $table->string('name');
             $table->string('symbol');
+            $table->string('img');
             $table->timestamps();
         });
     }
