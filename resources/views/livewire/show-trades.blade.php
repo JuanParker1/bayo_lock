@@ -1,140 +1,141 @@
 <div>
-    <style>
-        .item1 {
-            grid-area: empty;
-        }
+    @if($trade !== null)
+        <div class="trade-viewer">
+            <!-- tr wrappes all .card-block -->
+            <div class="card-wrapper">
 
-        .icon {
-            grid-area: icon;
-        }
-
-        .text {
-            grid-area: text;
-        }
-
-        .card-block {
-            display: grid;
-            grid-template-areas:
-            'empty empty empty empty'
-            'icon icon clear clear'
-            'text text text text';
-            gap: 5px;
-            padding: 25px;
-        }
-
-        .card-wrapper {
-            display: flex;
-            gap: 25px;
-        }
-
-        .action1 {
-            grid-area: action1;
-        }
-
-        .action2 {
-            grid-area: action2;
-        }
-
-        .action3 {
-            grid-area: action3;
-        }
-
-        .action4 {
-            grid-area: action4;
-        }
-
-        .card-block-actions {
-            display: grid;
-            grid-template-areas:
-            'action1 action1 action2 action2'
-            'action3 action3 action4 action4';
-        }
-
-        .card-block-actions, .card-block {
-            /* figma style copied */
-            min-width: 175px;
-            height: 180px;
-            box-shadow: 0px 10px 16px 0px rgb(0 0 0 / 20%);
-            border-radius: 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .card-block-multiple::after, .card-block-extend::after {
-            content: '';
-            border-bottom: 1px solid grey;
-            width: 100%;
-            height: 50px;
-            position: absolute;
-            bottom: -7px;
-            border-radius: 25px;
-        }
-
-        .card-block-multiple::before {
-            content: '';
-            border-bottom: 1px solid grey;
-            width: 100%;
-            height: 50px;
-            position: absolute;
-            bottom: -14px;
-            border-radius: 25px;
-        }
-
-        .trade-viewer {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 45px;
-        }
-    </style>
-    <div class="trade-viewer">
-        <!-- tr wrappes all .card-block -->
-        <div class="card-wrapper">
-
-            <!-- single block! -->
-            <div class="card-block {!! $tradeClass !!}">
-                <div class="item1"></div>
-                <div class="icon">
-                    <img src="{{ $trade['img']['small'] }}">
-                </div>
-                <div class="text">
-                    <h3>{!! $trade['name'] !!}</h3>
-                </div>
-                <div class="item1"></div>
-            </div>
-
-            <div class="card-block {!! $tradeClass !!}">
-                <div class="item1"></div>
-                <div class="icon">Order date</div>
-                <div class="text">{!! date('d M. Y' ,strtotime($trade['orderDay'])) !!}</div>
-                <div class="item1"></div>
-            </div>
-
-            <!-- crypto amount -->
-            <div class="card-block {!! $tradeClass !!}">
-                <div class="item1"></div>
-                <div class="icon">Amount</div>
-                <div class="text">{!! round($trade['totalCurrency']) !!} amt.</div>
-                <div class="item1"></div>
-            </div>
-
-            <!-- action button -->
-            <div class="card-block-actions {!! $tradeClass !!}">
-                <div class="action1">1</div>
-                <div class="action2">2</div>
-                <div class="action3">3</div>
-                @if($trade['isCollective'])
-                    <div class="action4">
-                        <button wire:click="extend" class="btn{{ $trade['name'] }}">
-                            show collective
-                        </button>
+                <!-- currency -->
+                <div class="block-box {!! $collapseClass !!}">
+                    <div class="block as-column">
+                        <div class="block-child">
+                            <img src="{{ $trade['img']['small'] }}">
+                        </div>
+                        <div class="block-child">
+                            <h3>{!! $trade['name'] !!}</h3>
+                        </div>
                     </div>
-                @endif
+                </div>
+
+                <!-- crypto amount -->
+                <div class="block-box {!! $collapseClass !!}">
+                    <div class="block">
+                        <div class="block-child seperation">Amount</div>
+                        <div class="block-child seperation">{!! round($trade['summed'],3) !!} pcs.</div>
+                    </div>
+                </div>
+
+                <!-- current price -->
+                <div class="block-box {!! $collapseClass !!}"
+                     wire:poll.60s="refreshPrice('{{ $trade["cryptoId"] }}','{{ $trade["summed"] }}')">
+                    <div class="block">
+                        <div class="block-child seperation">
+                            <span>Balance</span>
+                        </div>
+                        <div class="block-child seperation">
+                            <span>
+                            {!! round($currentBalance['percentage'],2) !!}%
+                            </span>
+                        </div>
+                        <div class="block-child seperation">Price</div>
+                        <div class="block-child seperation">
+                            <span>
+                            {!!  round($currentPrice,2) !!}€
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- action button -->
+                <div class="card-block-actions {!! $collapseClass !!}">
+                    {{-- Edit --}}
+                    <div class="action icon" wire:click="decrease('{{ $trade["id"] }}')">
+                        <i class="bi bi-plus-slash-minus"></i>
+                    </div>
+
+                    {{-- Bin --}}
+                    <div class="action icon"
+                         wire:click.prevent="delete('{{ implode(',',$trade['collectiveIds']) ?? $trade['id'] }}')">
+                        <i class="bi bi-trash3"></i>
+                    </div>
+
+                    {{-- collection --}}
+                    @if($trade['isCollective'])
+                        <div class="action icon btn{{ $trade['name'] }}" wire:click="extend">
+                            <i class="bi bi-collection"></i>
+                        </div>
+                    @else
+                        {{-- Info --}}
+                        <div class="action icon" wire:click="openModal">
+                            <i class="bi bi-info"></i>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
-    </div>
-    @if($showCollective == true)
-        <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>
+        @if($showCollective == true)
+            <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>
+        @endif
+
+        {{-- modal --}}
+        @if($openModal)
+            <div class="blur-container" wire:click.prevent="closeModal">
+                <div class="block">
+
+                    <div class="block-modal" wire:click.stop="">
+                        <div class="block-modal-layout">
+
+                            <div class="modal-icon icon">
+                                <i class="bi bi-calendar-week"></i>
+                            </div>
+
+                            <div class="modal-date">
+                                {{ date('d M Y', strtotime($trade['orderDay'])) }}
+                            </div>
+                            <div class="modal-content">content</div>
+
+                            <div class="modal-currentPrice">
+                                <div class="block">
+                                    <div class="block-child seperation">Bought price</div>
+                                    <div class="block-child seperation">
+                                    <span>
+                                        {!!  round($trade['currencySinglePrice'],2) !!}€
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-buyPrice">
+                                <div class="block">
+                                    <div class="block-child seperation">Current price</div>
+                                    <div class="block-child seperation">
+                                    <span>
+                                        {!!  round($currentPrice,2) !!}€
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-percent">
+                                <div class="block">
+                                    <div class="block-child seperation">Balance</div>
+                                    <div class="block-child seperation">
+                                    <span>
+                                        {!! round($currentBalance['percentage'],2) !!}%
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        @endif
+        {{-- edit modal --}}
+        @if($editAble)
+            <livewire:update-trade :wire:key="'update-'.$trade['id']" :tradeId="$trade['id']" :orderDay="$trade['orderDay']" :summed="$trade['summed']" :img="$trade['img']['large']"/>
+        @endif
     @endif
 </div>
 
