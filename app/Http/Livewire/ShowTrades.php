@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Trade;
 use App\Services\CryptoService;
 use Livewire\Component;
 
@@ -9,24 +10,31 @@ class ShowTrades extends Component
 {
     public $trade;
     public $currentPrice;
+    public $currentBalance;
     public $showCollective;
-    public $tradeClass;
+    public $collapseClass;
+    public $openModal = false;
+    public $editAble = false;
+
+    protected $listeners = ['closeEditModal'];
 
     public function mount()
     {
         $this->showCollective = false;
         $cryptoService = new CryptoService();
-        $this->currentPrice = $cryptoService->getCryptoPrice($this->trade['cryptoId']);
+
+        $this->refreshPrice($this->trade['cryptoId'], $this->trade['summed']);
+
         $this->trade['img'] = $cryptoService->getCryptoImage($this->trade['cryptoId']);
         $this->trade['class'] = $this->trade['countOfCollective'] > 1 ? ($this->trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
-        $this->tradeClass = $this->trade['class'];
+        $this->currentBalance = $cryptoService->getBilance($this->currentPrice, $this->trade['currencySinglePrice'] * $this->trade['summed']);
     }
 
     public function refreshPrice($cryptoId, $totalValue)
     {
-//        $cryptoService = new CryptoService();
-//        $priceList = $cryptoService->getCryptoPrice($cryptoId);
-//        $this->currentPirce = $priceList[$cryptoId]['eur'] * $totalValue;
+        $priceList = (new CryptoService())->getCryptoPrice($cryptoId);
+        $this->currentPrice = $priceList[$cryptoId]['eur'] * $totalValue;
+        $this->currentBalance = (new CryptoService())->getBilance($this->currentPrice, $this->trade['currencySinglePrice'] * $totalValue);
     }
 
     public function extend()
@@ -34,12 +42,39 @@ class ShowTrades extends Component
         $this->showCollective = $this->showCollective == true ? false : true;
 
         // toogle class for view
-        if ($this->showCollective){
-            $this->tradeClass = null;
+        if ($this->showCollective) {
+            $this->collapseClass = null;
             return;
         }
 
-        $this->tradeClass = $this->trade['class'];
+        $this->collapseClass = $this->trade['class'];
+    }
+
+    public function delete($id)
+    {
+        $idList = explode(',', $id);
+        Trade::find($idList)->each->delete();
+        $this->trade = null;
+    }
+
+    public function decrease()
+    {
+        $this->editAble = True;
+    }
+
+    public function closeModal()
+    {
+        $this->openModal = false;
+    }
+
+    public function openModal()
+    {
+        $this->openModal = true;
+    }
+
+    public function closeEditModal()
+    {
+        $this->editAble = false;
     }
 
     public function render()

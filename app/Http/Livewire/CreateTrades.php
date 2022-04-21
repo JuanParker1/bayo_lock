@@ -13,7 +13,8 @@ class CreateTrades extends Component
     public $search = '';
     public $coin = [];
     public $results = [];
-    public $switchScreen;
+    public $contractId;
+    public $switchScreen = False;
 
     // FROM named elements
     public $orderDay;
@@ -21,12 +22,13 @@ class CreateTrades extends Component
     public $currencyTotal;
 
 
-    public function selectedCoin($id,$name,$symbol)
+    public function selectedCoin($id, $name, $symbol, $img)
     {
         $this->coin['id'] = $id;
         $this->coin['name'] = $name;
         $this->coin['symbol'] = $symbol;
-        $this->results = [];
+        $this->coin['img'] = $img;
+        $this->results = null;
         $this->switchScreen = True;
     }
 
@@ -39,12 +41,19 @@ class CreateTrades extends Component
         }
     }
 
+    public function back()
+    {
+        $this->switchScreen = False;
+        return;
+    }
+
     public function store()
     {
         $currency = Cryptocurrency::firstOrCreate([
             'name' => $this->coin['name'],
             'crypto_id' => $this->coin['id'],
-            'symbol' => 'symbol'
+            'symbol' => $this->coin['symbol'],
+            'img' => $this->coin['img']
         ]);
 
         $trade = Trade::firstOrCreate([
@@ -55,10 +64,10 @@ class CreateTrades extends Component
         ]);
 
         // link
-        $contract = Contract::find($this->contract_id);
+        $contract = Contract::find($this->contractId);
 
         $contract->trades()->attach($trade);
-        return $this->redirect("/contract/{$this->contract_id}");
+        return $this->redirect("/contract/{$this->contractId}");
     }
 
     public function render()
