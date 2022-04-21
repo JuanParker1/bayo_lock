@@ -1,0 +1,51 @@
+.modal-header .img {
+    height: 10vh;
+    flex: 1;
+}
+
+.modal-icon img {
+    height: 100%;
+}
+
+.modal-header-text {
+    flex: 2;
+    text-align: left;
+    font-size: xxx-large;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal-body-header {
+    flex-basis: 80%;
+    display: flex;
+}
+
+.modal-edit-header {
+    flex: 1;
+    font-size: xx-large;
+    font-family: "Calibri Light";
+    border-bottom: 2px solid lightgrey;
+}
+
+.modal-body {
+    display: flex;
+}
+
+.modal-body .modal-body-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body-tr{
+    flex: 1;
+    display: flex;
+}
+
+.modal-body .modal-edit-body {
+    flex: 1;
+    padding: 15px;
+}

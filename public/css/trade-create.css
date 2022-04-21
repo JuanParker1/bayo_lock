@@ -1,0 +1,248 @@
+.create-container {
+    display: grid;
+    grid-template-areas:
+                'result result result result'
+                '. heade heade .'
+                '. search search .';
+    grid-template-rows: 20% 50% 30%;
+    gap: 20px;
+}
+
+.trade-message {
+    align-self: center;
+    font-weight: lighter;
+}
+
+/* search-result */
+.trade-search-result {
+    grid-area: result;
+    text-align: center;
+    color: rgb(150, 150, 150);
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+}
+
+.trade-search-result-container {
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.search-result {
+    grid-area: result;
+    width: 100%;
+    height: 20vh;
+    cursor: pointer;
+}
+
+.search-result-empty {
+    height: 20vh;
+}
+
+.search-result:hover .search-result-text span {
+    color: #0a53be;
+}
+
+.search-result-icon img {
+    width: 50px;
+}
+
+.coin-name {
+    word-wrap: break-word;
+}
+
+/* header */
+.trade-header {
+    grid-area: heade;
+}
+
+.trade-header-container {
+    text-align: center;
+    padding: 25px;
+}
+
+.trade-header-container h1 {
+    font-size: 400%;
+}
+
+.trade-header-container h2 {
+    font-size: 320%;
+}
+
+.trade-header-sub-text {
+    margin-top: -15px;
+    margin-bottom: 5px;
+}
+
+.trade-header-sub-text span {
+    color: orangered;
+}
+
+.trade-header-container .trade-header-icon-container {
+    display: flex;
+    box-sizing: border-box;
+}
+
+.trade-header-icon-container .icon {
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.trade-header-icon-container .icon div {
+    background-image: url("{{ asset('img/myimage.png') }}");
+}
+
+.trade-header-icon-container .text {
+    flex-grow: 1;
+    text-align: left;
+    align-self: center;
+}
+
+/* search-area */
+.trade-search-area {
+    grid-area: search;
+    text-align: center;
+    height: 100%;
+    min-height: 20vh;
+}
+
+.trade-search-area span {
+    width: 100%;
+    justify-self: center;
+    align-self: center;
+}
+
+.trade-search-area input {
+    width: 75%;
+    border-radius: 5px;
+    border: 1px solid;
+    line-height: 45px;
+    text-align: center;
+}
+
+/* trade-input-area */
+.other-inputs-values {
+    display: grid;
+    grid-template-areas: 'header header header header'
+            'content content content content'
+            'action action action action';
+    gap: 50px;
+}
+
+.trade-header-area {
+    grid-area: header;
+    height: 20vh;
+    border-top: 1px solid lightblue;
+    border-bottom: 1px solid lightblue;
+}
+
+.trade-header-area .filler {
+    justify-content: center;
+}
+
+.trade-header-area h3 {
+    align-self: center;
+}
+
+.trade-input-area {
+    grid-area: content;
+}
+
+.trade-btn-area {
+    grid-area: action;
+}
+
+.trade-input-area {
+    height: 35vh;
+    width: 100%;
+    border-top: 1px solid lightblue;
+    border-bottom: 1px solid lightblue;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.trade-input-area .item {
+    border-left: 1px solid lightblue;
+}
+
+.filler .item {
+    height: 75%;
+    flex: 1;
+    text-align: center;
+    align-self: center;
+}
+
+.item-label, .item-input {
+    height: 50%;
+}
+
+.item-input input {
+    border-radius: 5px;
+    width: 75%;
+    height: 40%;
+    color: blue;
+    padding: 15px;
+    box-shadow: 0px 3px 16px 0px lightgrey;
+    border-block-style: none;
+}
+
+.item-label h3 {
+    color: #5C9BD3;
+}
+
+.trade-btn-area {
+    grid-area: action;
+    height: 20vh;
+}
+
+/*.trade-btn-area .btn-store, .btn-back, .btn-action {*/
+/*    height: 50%;*/
+/*    align-self: center;*/
+/*    background-color: transparent;*/
+/*    border-radius: 15px;*/
+/*    width: 60%;*/
+/*}*/
+
+.btn-action {
+    height: 100%;
+    align-self: center;
+    background-color: transparent;
+    border-radius: 15px;
+    width: 60%;
+}
+
+.btn-back {
+    border-color: orangered;
+    color: orangered;
+}
+
+.btn-back:hover, .btn-store:hover {
+    color: rgb(150, 150, 150);
+}
+
+.btn-store {
+    border-color: #5e9ed4;
+    color: #5e9ed4;
+}
+
+/* default color */
+.blue {
+    color: #510ff8;
+}
+
+.red {
+    color: orangered;
+}
+
+.filler {
+    height: 100%;
+    display: flex;
+    width: 100%;
+}
+
+.shadow {
+    box-shadow: 0px 3px 16px 0px lightgrey;
+}
