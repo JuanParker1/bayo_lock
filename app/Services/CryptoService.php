@@ -48,7 +48,7 @@ class CryptoService
      * @return array
      * @throws \Exception
      */
-    public function getCryptoPrice($cryptocurrencies, $fiat='eur')
+    public function getCryptoPrice($cryptocurrencies, $fiat = 'eur')
     {
         return $this->client->simple()->getPrice($cryptocurrencies, $fiat);
     }
@@ -66,25 +66,11 @@ class CryptoService
         ['image'];
     }
 
-    /**
-     * @param $cryptoId
-     * @param $cryptocurrencies
-     * @param string $fiat
-     * @return array
-     * @throws \Exception
-     */
-    public function createCurrencyObject($cryptoId, $cryptocurrencies, $fiat = 'eur') :array
+    public function getBilance($currentPrice, $purchasePrice)
     {
-        $currencyGroupBy = $this->groupByCryptoId($cryptoId);
         return [
-            'currencyId' => $cryptoId,
-            'name' => $currencyGroupBy->collection['name'],
-            'order-by' => $currencyGroupBy->collection['order-day'],
-            'total-currency' => $currencyGroupBy->collection['total-currency'],
-            'total-price' => (float)$currencyGroupBy->collection['total-currency'] * (float)$currencyGroupBy->collection['currency-single-price'],
-            'currency_array' => $currencyGroupBy->collectionSampler,
-            'image' => (object)$this->getCryptoImage($cryptoId),
-            'current-price' => $this->getCryptoPrice($cryptocurrencies, $fiat)
+            'balance' => $currentPrice - $purchasePrice,
+            'percentage' => ($currentPrice - $purchasePrice) / $purchasePrice * 100
         ];
     }
 }
