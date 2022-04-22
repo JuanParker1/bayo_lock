@@ -16,7 +16,7 @@ class ShowTrades extends Component
     public $openModal = false;
     public $editAble = false;
 
-    protected $listeners = ['closeEditModal'];
+    protected $listeners = ['closeEditModal','closeModal'];
 
     public function mount()
     {
@@ -41,7 +41,7 @@ class ShowTrades extends Component
     {
         $this->showCollective = $this->showCollective == true ? false : true;
 
-        // toogle class for view
+        // toggle class for view
         if ($this->showCollective) {
             $this->collapseClass = null;
             return;
