@@ -1,39 +1,5 @@
 <div>
-    <style>
-        .inline-block {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        .collective-children.header {
-            width: 20%;
-            border-top: 1px solid;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .collective-children.footer {
-            width: 20%;
-            border-bottom: 1px solid;
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .collective-children.body {
-            width: 20%;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .header {
-            font-size: large;
-        }
-
-        .-table {
-            width: 40%;
-        }
-    </style>
+    <link href="{{ asset('css/trade-childern.css') }}" rel="stylesheet">
     <center>
         <div class="-table">
             <div class="inline-block">
@@ -47,13 +13,14 @@
                     Price
                 </div>
                 <div class="collective-children header">
-                    Action
+                    Location
                 </div>
             </div>
 
             {{--     table body --}}
             @foreach($collective as $element)
-                <div class="inline-block">
+                <div class="inline-block collective-row">
+
                     <div class="collective-children body">
                         {!! date('d M. Y' ,strtotime($element["order-day"])) !!}
                     </div>
@@ -61,12 +28,13 @@
                         {!! $element["total-currency"] !!}
                     </div>
                     <div class="collective-children body">
-                        {!! $element['currency-single-price'] * $element["total-currency"] !!}
-                        <small>{!! $element['currency-single-price'] !!}</small>
+                        {!! $element['currency-single-price'] * $element["total-currency"] !!} Eur.
                     </div>
                     <div class="collective-children body">
-                        Action
+                        <a href="#" class="full-width"></a>
+                        Binance
                     </div>
+
                 </div>
             @endforeach
 
