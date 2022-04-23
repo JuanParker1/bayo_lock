@@ -8,7 +8,7 @@
                     <div class="card-wrapper">
 
                         <!-- currency -->
-                        <div class="block-box {!! $trade['class'] !!} {!! $collapseClasses !!}">
+                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
                             <div class="block as-column">
                                 <div class="block-child">
                                     <img src="{{ $trade['img']['small'] }}">
@@ -20,7 +20,7 @@
                         </div>
 
                         <!-- crypto amount -->
-                        <div class="block-box {!! $trade['class'] !!} {!! $collapseClasses !!}">
+                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
                             <div class="block">
                                 <div class="block-child seperation">Amount</div>
                                 <div class="block-child seperation">{!! round($trade['summed'],3) !!} pcs.</div>
@@ -28,9 +28,7 @@
                         </div>
 
                         <!-- current price -->
-                        <div class="block-box {!! $trade['class'] !!} {!! $collapseClasses !!}"
-                             wire:poll.61s="refreshPrice('{{ $trade['cryptoId'] }}')"
-                        >
+                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
                             <div class="block">
                                 <div class="block-child seperation">
                                     <span>Balance</span>
@@ -50,7 +48,7 @@
                         </div>
 
                         <!-- action button -->
-                        <div class="card-block-actions {!! $trade['class'] !!} {!! $collapseClasses !!}">
+                        <div class="card-block-actions {!! $collapseClasses[$trade['cryptoId']] !!}">
                             {{-- Edit --}}
                             <div class="action icon" wire:click="decrease('{{ $trade["id"] }}')">
                                 <i class="bi bi-plus-slash-minus"></i>
@@ -64,7 +62,8 @@
 
                             @if($trade['isCollective'])
                                 {{-- collection --}}
-                                <div class="action icon btn{{ $trade['name'] }}" wire:click="extend">
+                                <div class="action icon btn{{ $trade['name'] }}"
+                                     wire:click="extend( '{{ $trade['cryptoId'] }}' )">
                                     <i class="bi bi-collection"></i>
                                 </div>
                             @else
@@ -76,10 +75,11 @@
                         </div>
                     </div>
                 </div>
-                @if($showCollective == true)
-                    {{--            <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>--}}
-                @endif
-
+                <div>
+                    @if($showCollective[$trade['cryptoId']] == true)
+                        <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>
+                    @endif
+                </div>
                 {{-- modal --}}
                 @if($openModal)
                     {{--            <livewire:trade-modal :trade="$trade" :currentBalance="$tradesLiveBalance" :currentPrice="$currentPrice" />--}}
