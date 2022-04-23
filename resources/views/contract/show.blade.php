@@ -20,10 +20,13 @@
                 </div>
             </a>
         </div>
-{{--        <a href="/contract/{!! $contract->id !!}/create-trade">create new trade</a>--}}
+        {{--        <a href="/contract/{!! $contract->id !!}/create-trade">create new trade</a>--}}
     </div>
-    @foreach($trades as $trade)
-        <livewire:show-trades :trade="$trade"/>
-    @endforeach
+    {{--    @foreach($trades as $trade)--}}
+    {{--        <livewire:show-trades :trade="$trade"/>--}}
+    {{--    @endforeach--}}
+
+    {{--  übergebe alle ins controller anstatt einzel.  --}}
+    <livewire:show-trades :trades="$trades"/>
 
 @endsection

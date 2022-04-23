@@ -8,36 +8,47 @@ use Livewire\Component;
 
 class ShowTrades extends Component
 {
-    public $trade;
-    public $currentPrice;
-    public $currentBalance;
-    public $showCollective;
-    public $collapseClass;
+
+    public $trades;
+    public $tradesKeys = '';
+    public $tradesLivePrices = [];
+    public $tradesLiveBalance = [];
+    public $showCollective = [];
+    public $collapseClasses;
     public $openModal = false;
     public $editAble = false;
 
-    protected $listeners = ['closeEditModal','closeModal'];
+    protected $listeners = ['closeEditModal', 'closeModal'];
 
     public function mount()
     {
-        $this->showCollective = false;
         $cryptoService = new CryptoService();
 
-        $this->refreshPrice($this->trade['cryptoId'], $this->trade['summed']);
+        foreach ($this->trades as $key => &$trade) {
+            $trade['img'] = $trade['imgUrl'] ?? $cryptoService->getCryptoImage($trade['cryptoId']);
+            $trade['class'] = $trade['countOfCollective'] > 1 ? ($trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
 
-        $this->trade['img'] = $cryptoService->getCryptoImage($this->trade['cryptoId']);
-        $this->trade['class'] = $this->trade['countOfCollective'] > 1 ? ($this->trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
-        $this->currentBalance = $cryptoService->getBilance($this->currentPrice, $this->trade['currencySinglePrice'] * $this->trade['summed']);
+            $this->tradesKeys = array_key_last($this->trades) === $key ? $this->tradesKeys . $key : $this->tradesKeys . $key . ',';
+            $this->tradesLiveBalance[$key] = null;
+        }
+        $this->refreshPrices();
     }
 
-    public function refreshPrice($cryptoId, $totalValue)
+    public function refreshPrices()
     {
-        $priceList = (new CryptoService())->getCryptoPrice($cryptoId);
-        $this->currentPrice = $priceList[$cryptoId]['eur'] * $totalValue;
-        $this->currentBalance = (new CryptoService())->getBilance($this->currentPrice, $this->trade['currencySinglePrice'] * $totalValue);
+        $this->getCurrencyPrices();
+        foreach (explode(',', $this->tradesKeys) as $key) {
+            $trade = $this->trades[$key];
+            $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
+        }
     }
 
-    public function extend()
+    private function getCurrencyPrices()
+    {
+        $this->tradesLivePrices = (new CryptoService())->getCryptoPrice($this->tradesKeys);
+    }
+
+    public function extend($trade)
     {
         $this->showCollective = $this->showCollective == true ? false : true;
 
@@ -47,14 +58,14 @@ class ShowTrades extends Component
             return;
         }
 
-        $this->collapseClass = $this->trade['class'];
+        $this->collapseClass = $trade['class'];
     }
 
     public function delete($id)
     {
         $idList = explode(',', $id);
         Trade::find($idList)->each->delete();
-        $this->trade = null;
+        $trade = null;
     }
 
     public function decrease()
@@ -79,6 +90,9 @@ class ShowTrades extends Component
 
     public function render()
     {
+//        return '<h1>asd</h1>';
         return view('livewire.show-trades');
     }
 }
+
+
