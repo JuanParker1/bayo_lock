@@ -62,8 +62,8 @@
                                 <i class="bi bi-trash3"></i>
                             </div>
 
-                            {{-- collection --}}
                             @if($trade['isCollective'])
+                                {{-- collection --}}
                                 <div class="action icon btn{{ $trade['name'] }}" wire:click="extend">
                                     <i class="bi bi-collection"></i>
                                 </div>
