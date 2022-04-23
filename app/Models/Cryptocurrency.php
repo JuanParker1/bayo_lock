@@ -10,9 +10,10 @@ class Cryptocurrency extends Model
     use HasFactory;
 
     protected $fillable = [
-      'name',
-      'crypto_id',
-      'symbol'
+        'name',
+        'crypto_id',
+        'symbol',
+        'img'
     ];
 
 }
