@@ -30,6 +30,8 @@ class ShowTrades extends Component
 
             $this->tradesKeys = array_key_last($this->trades) === $key ? $this->tradesKeys . $key : $this->tradesKeys . $key . ',';
             $this->tradesLiveBalance[$key] = null;
+            $this->showCollective[$key] = null;
+            $this->collapseClasses[$key] = $trade['class'];
         }
         $this->refreshPrices();
     }
@@ -48,17 +50,24 @@ class ShowTrades extends Component
         $this->tradesLivePrices = (new CryptoService())->getCryptoPrice($this->tradesKeys);
     }
 
-    public function extend($trade)
+    public function extend($cryptoId)
     {
-        $this->showCollective = $this->showCollective == true ? false : true;
+        // check if any collapsed is open, close it.
+        foreach ($this->showCollective as $key => &$collective) {
+            if ($cryptoId == $key) continue;
+            $collective = false;
+            $this->collapseClasses[$key] = $this->trades[$key]['class'];
+        }
+
+        $this->showCollective[$cryptoId] = $this->showCollective[$cryptoId] == true ? false : true;
 
         // toggle class for view
-        if ($this->showCollective) {
-            $this->collapseClass = null;
+        if ($this->showCollective[$cryptoId]) {
+            $this->collapseClasses[$cryptoId] = null;
             return;
         }
 
-        $this->collapseClass = $trade['class'];
+        $this->collapseClasses[$cryptoId] = $this->trades[$cryptoId]['class'];
     }
 
     public function delete($id)
