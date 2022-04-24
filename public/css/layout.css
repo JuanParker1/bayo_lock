@@ -53,3 +53,8 @@
 .anchor {
     color: darkgrey;
 }
+
+/* font sizes */
+.xx-large {
+    font-size: xx-large;
+}
