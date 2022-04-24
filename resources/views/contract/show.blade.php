@@ -7,6 +7,7 @@
     <link href="{{ asset('css/trade-create.css') }}" rel="stylesheet">
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/button.css') }}" rel="stylesheet">
     {{--    <livewire:show-currency :contract_id="$contract->id"/>--}}
 
     <div class="trade-header">
