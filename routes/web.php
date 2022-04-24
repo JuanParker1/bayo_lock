@@ -42,7 +42,4 @@ Route::post('/contract/{contract_id}/create-trade', [App\Http\Controllers\Contra
 Route::get('/deposit/create', [App\Http\Controllers\DepositsController::class, 'create']);
 Route::post('/deposit/create', [App\Http\Controllers\DepositsController::class, 'store']);
 
-Route::get('/test',\App\Http\Livewire\ShowTradesCommitOut::class);
-
-Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
