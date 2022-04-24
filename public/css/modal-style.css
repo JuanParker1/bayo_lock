@@ -5,7 +5,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -24,7 +24,7 @@
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-areas: 'icon date date'
+    grid-template-areas: 'icon date action'
     'content content content'
     'currentPrice buyPrice percent';
     gap: 25px;
@@ -43,29 +43,31 @@
     font-size: xxx-large;
 }
 
+.modal-action {
+    grid-area: action;
+}
+
 .modal-content {
     grid-area: content;
-    border: 1px dashed #510ff8;
-    border-radius: 15px;
     padding: 25px;
 }
 
 .modal-currentPrice {
     grid-area: currentPrice;
-    border: 1px dashed #510ff8;
     border-radius: 15px;
 }
 
 .modal-buyPrice {
     grid-area: buyPrice;
+}
+
+.modal-content {
     border: 1px dashed #510ff8;
     border-radius: 15px;
 }
 
 .modal-percent {
     grid-area: percent;
-    border: 1px dashed #510ff8;
-    border-radius: 15px;
 }
 
 /** Modal Global **/
