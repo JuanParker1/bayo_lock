@@ -20,7 +20,7 @@ class ShowTradeChildern extends Component
         $trade = Trade::find($id);
         $cryptoId = $trade->cryptocurrency->crypto_id;
 
-        $this->emitUp('openModal', 'info', $cryptoId,);
+        $this->emitUp('openModal', 'info', $cryptoId, $id);
     }
 
     public function render()
