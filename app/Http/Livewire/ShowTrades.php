@@ -13,12 +13,14 @@ class ShowTrades extends Component
     public $tradesKeys = '';
     public $tradesLivePrices = [];
     public $tradesLiveBalance = [];
+
     public $showCollective = [];
     public $collapseClasses;
+
     public $openModal = false;
     public $editAble = false;
 
-    protected $listeners = ['closeEditModal', 'closeModal'];
+    protected $listeners = ['openModal'];
 
     public function mount()
     {
@@ -87,9 +89,16 @@ class ShowTrades extends Component
         $this->openModal = false;
     }
 
-    public function openModal()
+    public function openModal($type, $cryptoId)
     {
-        $this->openModal = true;
+        if ($type === 'info') {
+            $this->emit('openModal', 'trade-modal', [
+                'trade' => $this->trades[$cryptoId],
+                'liveBalance' => $this->tradesLiveBalance[$cryptoId],
+                'livePrice' => $this->tradesLivePrices[$cryptoId]['eur'],
+                'showTradeInfo' => true
+            ]);
+        }
     }
 
     public function closeEditModal()
