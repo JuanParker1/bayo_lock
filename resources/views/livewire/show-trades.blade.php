@@ -3,6 +3,7 @@
         <section wire:poll.60s="refreshPrices">
 
             @foreach($trades as $trade)
+                @if(empty($trade)) @continue(true) @endif
                 <div class="trade-viewer">
                     <!-- tr wrappes all .card-block -->
                     <div class="card-wrapper">
@@ -11,7 +12,7 @@
                         <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
                             <div class="block as-column">
                                 <div class="block-child">
-                                    <img src="{{ $trade['img']['small'] }}">
+                                    <img src="{{ $trade['img']['small'] ?? $trade['imgUrl']}}">
                                 </div>
                                 <div class="block-child">
                                     <h3>{!! $trade['name'] !!}</h3>
@@ -50,13 +51,15 @@
                         <!-- action button -->
                         <div class="card-block-actions {!! $collapseClasses[$trade['cryptoId']] !!}">
                             {{-- Edit --}}
-                            <div class="action icon" wire:click="decrease('{{ $trade["id"] }}')">
-                                <i class="bi bi-plus-slash-minus"></i>
-                            </div>
+                            @if(!$trade['isCollective'])
+                                <div class="action icon" wire:click="openModal('edit','{{ $trade["cryptoId"] }}')">
+                                    <i class="bi bi-plus-slash-minus"></i>
+                                </div>
+                            @endif
 
                             {{-- Bin --}}
                             <div class="action icon"
-                                 wire:click.prevent="delete('{{ implode(',',$trade['collectiveIds']) ?? $trade['id'] }}')">
+                                 wire:click.prevent="delete('{{ implode(',',$trade['collectiveIds']) ?? $trade['id'] }}','{{ $trade['cryptoId'] }}')">
                                 <i class="bi bi-trash3"></i>
                             </div>
 
@@ -68,7 +71,7 @@
                                 </div>
                             @else
                                 {{-- Info --}}
-                                <div class="action icon" wire:click="openModal">
+                                <div class="action icon" wire:click="openModal('info','{{ $trade['cryptoId'] }}')">
                                     <i class="bi bi-info"></i>
                                 </div>
                             @endif
@@ -77,18 +80,12 @@
                 </div>
                 <div>
                     @if($showCollective[$trade['cryptoId']] == true)
-                        <livewire:show-trade-childern :ids="$trade['collectiveIds']"/>
+                        <livewire:show-trade-childern :ids="$trade['collectiveIds']"
+                                                      :wire:key="'trade-viewer-'.$trade['cryptoId']"/>
                     @endif
                 </div>
-                {{-- modal --}}
-                @if($openModal)
-                    {{--            <livewire:trade-modal :trade="$trade" :currentBalance="$tradesLiveBalance" :currentPrice="$currentPrice" />--}}
-                @endif
-                {{-- edit modal --}}
-                @if($editAble)
-                    {{--            <livewire:update-trade :wire:key="'update-'.$trade['id']" :tradeId="$trade['id']" :orderDay="$trade['orderDay']" :summed="$trade['summed']" :img="$trade['img']['large']"/>--}}
-                @endif
             @endforeach
+            <button wire:click.prevent="test">test!</button>
         </section>
     @endif
 </div>
