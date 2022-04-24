@@ -14,7 +14,13 @@ class Contract extends Model
         'status'
     ];
 
-    public function deposits(){
+    public function deposits()
+    {
         return $this->belongsToMany(Deposit::class);
+    }
+
+    public function trades()
+    {
+        return $this->belongsToMany(Trade::class);
     }
 }
