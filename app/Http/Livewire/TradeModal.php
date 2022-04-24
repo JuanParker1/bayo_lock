@@ -2,13 +2,15 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
+use LivewireUI\Modal\ModalComponent;
 
-class TradeModal extends Component
+class TradeModal extends ModalComponent
 {
     public $trade;
-    public $currentPrice;
-    public $currentBalance;
+    public $livePrice;
+    public $liveBalance;
+    public $showTradeInfo = false;
+
 
     public function render()
     {
