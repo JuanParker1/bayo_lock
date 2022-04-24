@@ -198,36 +198,6 @@
     height: 20vh;
 }
 
-/*.trade-btn-area .btn-store, .btn-back, .btn-action {*/
-/*    height: 50%;*/
-/*    align-self: center;*/
-/*    background-color: transparent;*/
-/*    border-radius: 15px;*/
-/*    width: 60%;*/
-/*}*/
-
-.btn-action {
-    height: 100%;
-    align-self: center;
-    background-color: transparent;
-    border-radius: 15px;
-    width: 60%;
-}
-
-.btn-back {
-    border-color: orangered;
-    color: orangered;
-}
-
-.btn-back:hover, .btn-store:hover {
-    color: rgb(150, 150, 150);
-}
-
-.btn-store {
-    border-color: #5e9ed4;
-    color: #5e9ed4;
-}
-
 /* default color */
 .blue {
     color: #510ff8;
