@@ -26,7 +26,7 @@
         @foreach($investors as $investor)
             <tr>
                 <td>
-                    <a href="/investor/{!! $investor->id !!}/contracts">
+                    <a href="/investor/{!! $investor->id !!}">
                         {!! $investor->firstname . ' ' . $investor->lastname !!}
                     </a>
                 </td>
