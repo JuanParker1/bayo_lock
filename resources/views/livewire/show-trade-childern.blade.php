@@ -31,7 +31,7 @@
                         {!! $element['currency-single-price'] * $element["total-currency"] !!} Eur.
                     </div>
                     <div class="collective-children body">
-                        <a href="#" class="full-width"></a>
+                        <span class="full-width" wire:click="openModal('{{ $element['id'] }}')"></span>
                         Binance
                     </div>
 
