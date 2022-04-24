@@ -2,17 +2,16 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\Trade;
+use LivewireUI\Modal\ModalComponent;
 
-class UpdateTrade extends Component
+class UpdateTrade extends ModalComponent
 {
     public $tradeId;
-    public $orderDay;
-    public $summed;
-    public $img;
-    public $modelTrade;
+    public $trade;
     public $sum;
+    public $img;
+    public $isCollective;
 
     // FORM ELEMENTS
     public $formOrderDay;
@@ -24,13 +23,13 @@ class UpdateTrade extends Component
 
     public function mount()
     {
-        $this->modelTrade = Trade::find($this->tradeId);
+        $this->trade = Trade::find($this->tradeId);
     }
 
     public function update()
     {
         //check if the number is smaller than the original
-        if ($this->summed < $this->formSummed) {
+        if ($this->trade['total-currency'] < $this->formSummed) {
             $this->formMessageSummed = 'it has to be smaller than the total amount!';
             return false;
         }
@@ -41,7 +40,7 @@ class UpdateTrade extends Component
             $trade['order-day'] = $this->formOrderDay;
         }
 
-        $trade['total-currency'] = $this->summed - $this->formSummed;
+        $trade['total-currency'] = $this->trade['total-currency'] - $this->formSummed;
 
         $trade->update();
 
@@ -55,13 +54,13 @@ class UpdateTrade extends Component
 
     public function render()
     {
-        if ($this->summed < $this->formSummed) {
-            $this->formMessageSummed = 'it has to be smaller than the total value!';
-        }
-
-        if ($this->formSummed > 0) {
-            $this->sum = $this->summed - $this->formSummed;
-        }
+//        if ($this->trade['total-currency'] < $this->formSummed) {
+//            $this->formMessageSummed = 'it has to be smaller than the total value!';
+//        }
+//
+//        if ($this->formSummed > 0) {
+//            $this->sum = $this->trade['total-currency'] - $this->formSummed;
+//        }
 
         return view('livewire.update-trade');
     }
