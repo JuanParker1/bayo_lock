@@ -26,17 +26,16 @@ class CryptoService
             $array[$trade[0]->cryptocurrency->crypto_id] = [
                 'id' => $trade[0]->id,
                 'summed' => $trade->sum('total-currency'),
+                'imgUrl' => $trade[0]->img,
                 'name' => $trade[0]->cryptocurrency->name,
                 'cryptoId' => $trade[0]->cryptocurrency->crypto_id,
                 'currencySinglePrice' => $trade[0]['currency-single-price'],
                 'totalCurrency' => $trade[0]['total-currency'],
                 'orderDay' => $trade[0]['order-day'],
-//                'collectionSampler' => count($trade) > 1 ? $trade : [],
                 'isCollective' => count($trade) > 1,
                 'collectiveIds' => $trade->pluck('id')->toArray(),
                 'countOfCollective' => count($trade),
             ];
-
         }
 
         return $array;
@@ -66,11 +65,11 @@ class CryptoService
         ['image'];
     }
 
-    public function getBilance($currentPrice, $purchasePrice)
+    public function getBilance($livePrice, $purchasePrice)
     {
         return [
-            'balance' => $currentPrice - $purchasePrice,
-            'percentage' => ($currentPrice - $purchasePrice) / $purchasePrice * 100
+            'balance' => $livePrice - $purchasePrice,
+            'percentage' => ($livePrice - $purchasePrice) / $purchasePrice * 100
         ];
     }
 }
