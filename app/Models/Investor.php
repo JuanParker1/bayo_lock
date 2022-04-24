@@ -17,7 +17,8 @@ class Investor extends Model
         'telefon',
     ];
 
-    public function contracts(){
+    public function contracts()
+    {
         return $this->belongsToMany(Contract::class);
     }
 }
