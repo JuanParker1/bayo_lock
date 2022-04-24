@@ -11,6 +11,11 @@ class TradeModal extends ModalComponent
     public $liveBalance;
     public $showTradeInfo = false;
 
+    public function delete()
+    {
+        $this->emitTo('show-trades', 'delete', implode(',', [$this->trade['modelId']]), $this->trade['cryptoId']);
+        $this->closeModal();
+    }
 
     public function render()
     {
