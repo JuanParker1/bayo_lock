@@ -9,7 +9,10 @@
                     <div class="card-wrapper">
 
                         <!-- currency -->
-                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
+                        <div class="block-box
+                        @if(!$trade['domAttributes']['showCollective'])
+                            {{ $trade['domAttributes']['class'] }}
+                        @endif">
                             <div class="block as-column">
                                 <div class="block-child">
                                     <img src="{{ $trade['img']['small'] ?? $trade['imgUrl']}}">
@@ -21,7 +24,10 @@
                         </div>
 
                         <!-- crypto amount -->
-                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
+                        <div class="block-box
+                        @if(!$trade['domAttributes']['showCollective'])
+                            {{ $trade['domAttributes']['class'] }}
+                        @endif">
                             <div class="block">
                                 <div class="block-child seperation">Amount</div>
                                 <div class="block-child seperation">{!! round($trade['summed'],3) !!} pcs.</div>
@@ -29,27 +35,33 @@
                         </div>
 
                         <!-- current price -->
-                        <div class="block-box {!! $collapseClasses[$trade['cryptoId']] !!}">
+                        <div class="block-box
+                        @if(!$trade['domAttributes']['showCollective'])
+                            {{ $trade['domAttributes']['class'] }}
+                        @endif">
                             <div class="block">
                                 <div class="block-child seperation">
                                     <span>Balance</span>
                                 </div>
                                 <div class="block-child seperation">
                             <span>
-                                {!! round($tradesLiveBalance[$trade['cryptoId']]['percentage'],2) !!}%
+                                {!! round($trade['live']['balance']['percentage'],2) !!}%
                             </span>
                                 </div>
                                 <div class="block-child seperation">Price</div>
                                 <div class="block-child seperation">
                             <span>
-                                {!!  round($tradesLivePrices[$trade['cryptoId']]['eur'],2) * $trade['summed'] !!}€
+                                {!!  round($trade['live']['price'],2) * $trade['summed'] !!}€
                             </span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- action button -->
-                        <div class="card-block-actions {!! $collapseClasses[$trade['cryptoId']] !!}">
+                        <div class="card-block-actions
+                        @if(!$trade['domAttributes']['showCollective'])
+                            {{ $trade['domAttributes']['class'] }}
+                        @endif">
                             {{-- Edit --}}
                             @if(!$trade['isCollective'])
                                 <div class="action icon" wire:click="openModal('edit','{{ $trade["cryptoId"] }}')">
@@ -79,7 +91,7 @@
                     </div>
                 </div>
                 <div>
-                    @if($showCollective[$trade['cryptoId']] == true)
+                    @if($trade['domAttributes']['showCollective'] == true)
                         <livewire:show-trade-childern :ids="$trade['collectiveIds']"
                                                       :wire:key="'trade-viewer-'.$trade['cryptoId']"/>
                     @endif

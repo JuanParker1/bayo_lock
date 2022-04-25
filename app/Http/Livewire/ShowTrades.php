@@ -15,7 +15,6 @@ class ShowTrades extends Component
     public $tradesLivePrices = [];
     public $tradesLiveBalance = [];
 
-    public $showCollective = [];
     public $collapseClasses;
 
     protected $listeners = ['openModal', 'delete'];
@@ -27,11 +26,14 @@ class ShowTrades extends Component
         foreach ($this->trades as $key => &$trade) {
             $trade['img'] = $trade['imgUrl'] ?? $cryptoService->getCryptoImage($trade['cryptoId']);
             $trade['class'] = $trade['countOfCollective'] > 1 ? ($trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
-            $trade['balance'] = null;
+            $trade['live']['balance'] = null;
+            $trade['live']['price'] = null;
+            $trade['domAttributes']['class'] = $trade['countOfCollective'] > 1 ? ($trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
+            $trade['domAttributes']['showCollective'] = false;
 
             $this->tradesKeys = array_key_last($this->trades) === $key ? $this->tradesKeys . $key : $this->tradesKeys . $key . ',';
             $this->tradesLiveBalance[$key] = null;
-            $this->showCollective[$key] = null;
+
             $this->collapseClasses[$key] = $trade['class'];
         }
 
@@ -42,8 +44,10 @@ class ShowTrades extends Component
     {
         $this->getCurrencyPrices();
         foreach (explode(',', $this->tradesKeys) as $key) {
-            $trade = $this->trades[$key];
+            $trade = &$this->trades[$key];
             $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
+            $trade['live']['balance'] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
+            $trade['live']['price'] = $this->tradesLivePrices[$key]['eur'];
         }
     }
 
@@ -54,22 +58,14 @@ class ShowTrades extends Component
 
     public function extend($cryptoId)
     {
-        // check if any collapsed is open, close it.
-        $this->collapseRollBack($cryptoId);
-        $this->showCollective[$cryptoId] = $this->showCollective[$cryptoId] == true ? false : true;
-
-        // toggle class for view
-        if ($this->showCollective[$cryptoId]) {
-            $this->collapseClasses[$cryptoId] = null;
-            return;
-        }
-
-        $this->collapseClasses[$cryptoId] = $this->trades[$cryptoId]['class'];
+        $trade = &$this->trades[$cryptoId];
+        $trade['domAttributes']['showCollective'] = $trade['domAttributes']['showCollective'] == true ? false : true;
     }
 
     public function delete($id, $cryptoId = null)
     {
         $idList = explode(',', $id);
+
         $model = Trade::find($idList);
         $model->each->delete();
 
@@ -77,9 +73,8 @@ class ShowTrades extends Component
         $this->trades[$cryptoId] = $this->refreshTrades($cryptoId);
         if ($this->trades[$cryptoId] === null) {
             // remove the cryptoId from tradeKeys
-            $this->tradesKeys = str_replace([',' . $cryptoId, $cryptoId], '', $this->tradesKeys);
             unset($this->trades[$cryptoId]);
-            unset($this->collapseClasses[$cryptoId]);
+            $this->refreshKeyList();
             return null;
         }
 
@@ -94,11 +89,9 @@ class ShowTrades extends Component
 
     protected function collapseRollBack($cryptoId = null)
     {
-        foreach ($this->showCollective as $key => &$collective) {
+        foreach ($this->trades as $key => $trade) {
             if ($cryptoId == $key) continue;
-            $collective = false;
-
-            $this->collapseClasses[$key] = $this->trades[$key]['class'];
+            $trade['domAttributes']['showCollective'] = false;
         }
     }
 
@@ -131,27 +124,37 @@ class ShowTrades extends Component
         $ids = $this->trades[$cryptoId]['collectiveIds'];
         $trades = Trade::find($ids)->first();
 
-        if (!$trades) {
-            return null;
-        }
-//        $result = $cryptoService->groupByCryptoId($trades);
-//
-//        if ($result) {
-//            return $result[$cryptoId];
-//        }
+        if (!$trades) return null;
+
+        $result = $cryptoService->groupByCryptoId($trades);
+        if ($result) return $result[$cryptoId];
 
         return $this->trades[$cryptoId];
+    }
+
+    public function refreshKeyList()
+    {
+        $str = null;
+        foreach ($this->trades as $key => $trade){
+            $this->tradesKeys = array_key_last($this->trades) === $key ? $str . $key : $str . $key . ',';
+        }
+    }
+
+    public function refreshClass(){
+
     }
 
     public function test()
     {
         dump($this->trades);
-        dump($this->tradesKeys);
-        dump($this->collapseClasses);
+//        dump($this->tradesKeys);
+//        dump($this->collapseClasses);
+//        dump($this->trades['solana']['getBalance']);
     }
 
     public function render()
     {
+//        dump($this->trades['solana']['getBalance']);
 //        return '<h1>asd</h1>';
         return view('livewire.show-trades');
     }
