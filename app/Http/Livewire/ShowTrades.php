@@ -45,8 +45,9 @@ class ShowTrades extends Component
         $this->getCurrencyPrices();
         foreach (explode(',', $this->tradesKeys) as $key) {
             $trade = &$this->trades[$key];
+            $cryptoId = $trade['cryptoId'];
             $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
-            $trade['live']['balance'] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
+            $trade['live']['balance'] = $this->tradesLiveBalance[$key];
             $trade['live']['price'] = $this->tradesLivePrices[$key]['eur'];
         }
     }
@@ -71,6 +72,7 @@ class ShowTrades extends Component
 
         // refresh if it is possible
         $this->trades[$cryptoId] = $this->refreshTrades($cryptoId);
+
         if ($this->trades[$cryptoId] === null) {
             // remove the cryptoId from tradeKeys
             unset($this->trades[$cryptoId]);
@@ -78,13 +80,14 @@ class ShowTrades extends Component
             return null;
         }
 
-        //adding class to new column
-        $this->trades[$cryptoId]['class'] = $this->trades[$cryptoId]['countOfCollective'] > 1 ? ($this->trades[$cryptoId]['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
+        // fill balance with value
+        $this->refreshPrices();
 
         // if collapse is opend close it
         if ($this->trades[$cryptoId]['isCollective']) {
             $this->collapseRollBack(false);
         }
+
     }
 
     protected function collapseRollBack($cryptoId = null)
@@ -120,16 +123,22 @@ class ShowTrades extends Component
 
     public function refreshTrades($cryptoId)
     {
+
         $cryptoService = new CryptoService();
         $ids = $this->trades[$cryptoId]['collectiveIds'];
-        $trades = Trade::find($ids)->first();
+        $trades = Trade::find($ids);
 
-        if (!$trades) return null;
+        // if single currency has deleted then nothing is there so exit
+        if (empty($trades[0])) return null;
 
+        // if something is remains then create basis structure
         $result = $cryptoService->groupByCryptoId($trades);
-        if ($result) return $result[$cryptoId];
+        if (!$result) return $this->trades[$cryptoId];
 
-        return $this->trades[$cryptoId];
+        // keep going and extend the needed properties like, img, class etc.
+        $result[$cryptoId] = $this->extendTradesProperties($result[$cryptoId]);
+
+        return $result[$cryptoId];
     }
 
     public function refreshKeyList()
@@ -140,22 +149,28 @@ class ShowTrades extends Component
         }
     }
 
-    public function refreshClass(){
+    public function extendTradesProperties($trade){
+        $cryptoService = new CryptoService();
+        $cryptoId = $trade['cryptoId'];
 
+        $trade['img'] = $trade['imgUrl'] ?? $cryptoService->getCryptoImage($cryptoId);
+        $trade['class'] = $trade['countOfCollective'] > 1 ? ($trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
+        $trade['live']['balance'] = $this->tradesLiveBalance[$cryptoId];
+        $trade['live']['price'] = $this->tradesLivePrices[$cryptoId] ?? null;
+        $trade['domAttributes']['class'] = $trade['countOfCollective'] > 1 ? ($trade['countOfCollective'] > 2 ? 'card-block-multiple' : 'card-block-extend') : '';
+        $trade['domAttributes']['showCollective'] = false;
+
+        return $trade;
     }
 
     public function test()
     {
         dump($this->trades);
-//        dump($this->tradesKeys);
-//        dump($this->collapseClasses);
-//        dump($this->trades['solana']['getBalance']);
+        dump($this->tradesKeys);
     }
 
     public function render()
     {
-//        dump($this->trades['solana']['getBalance']);
-//        return '<h1>asd</h1>';
         return view('livewire.show-trades');
     }
 }
