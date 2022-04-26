@@ -9,6 +9,7 @@ class ShowTradeChildern extends Component
 {
     public $ids;
     public $collective;
+    public $livePrice;
 
     public function mount()
     {

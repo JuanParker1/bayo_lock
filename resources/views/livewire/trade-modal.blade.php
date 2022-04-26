@@ -58,7 +58,9 @@
                                 <div class="block-child seperation">Current price</div>
                                 <div class="block-child seperation">
                                     <span>
-                                        {!!  round($livePrice,2) !!}€
+                                        @if(isset($livePrice))
+                                        {!!  round($livePrice   ,2) !!}€
+                                        @endif
                                     </span>
                                 </div>
                             </div>
@@ -69,7 +71,9 @@
                                 <div class="block-child seperation">Balance</div>
                                 <div class="block-child seperation">
                                     <span>
+                                        @if(isset($liveBalance['percentage']))
                                         {!! round($liveBalance['percentage'],2) !!}%
+                                        @endif
                                     </span>
                                 </div>
                             </div>

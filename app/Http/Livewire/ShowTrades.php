@@ -45,7 +45,7 @@ class ShowTrades extends Component
         $this->getCurrencyPrices();
         foreach (explode(',', $this->tradesKeys) as $key) {
             $trade = &$this->trades[$key];
-            $cryptoId = $trade['cryptoId'];
+            $cryptoId = $trade['cryptoId']; // kann das weg?
             $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
             $trade['live']['balance'] = $this->tradesLiveBalance[$key];
             $trade['live']['price'] = $this->tradesLivePrices[$key]['eur'];
@@ -100,19 +100,23 @@ class ShowTrades extends Component
 
     public function openModal($type, $cryptoId, $tradeId = null)
     {
+
         if ($type === 'info') {
+            $trade = $this->trades[$cryptoId];
 
             if ($tradeId) {
-                $trades = $this->trades[$cryptoId];
-                $trades['modelId'] = $tradeId;
+                $trades = Trade::find($tradeId);
+                $trade['currencySinglePrice'] = $trades['currency-single-price'];
+                $trades['balance'] = $this->getBalance($trade['live']['price'], ($trades['currency-single-price'] ?? $trade['currencySinglePrice']));
             }
 
             $this->emit('openModal', 'trade-modal', [
-                'trade' => $trades ?? $this->trades[$cryptoId],
-                'liveBalance' => $this->tradesLiveBalance[$cryptoId],
+                'trade' => $trade,
+                'liveBalance' => $trades['balance'] ?? $this->tradesLiveBalance[$cryptoId],
                 'livePrice' => $this->tradesLivePrices[$cryptoId]['eur'],
                 'showTradeInfo' => true,
             ]);
+
         } elseif ($type === 'edit') {
             $this->emit('openModal', 'update-trade', [
                 'tradeId' => $this->trades[$cryptoId]['id'],
@@ -144,12 +148,13 @@ class ShowTrades extends Component
     public function refreshKeyList()
     {
         $str = null;
-        foreach ($this->trades as $key => $trade){
+        foreach ($this->trades as $key => $trade) {
             $this->tradesKeys = array_key_last($this->trades) === $key ? $str . $key : $str . $key . ',';
         }
     }
 
-    public function extendTradesProperties($trade){
+    public function extendTradesProperties($trade)
+    {
         $cryptoService = new CryptoService();
         $cryptoId = $trade['cryptoId'];
 
@@ -161,6 +166,12 @@ class ShowTrades extends Component
         $trade['domAttributes']['showCollective'] = false;
 
         return $trade;
+    }
+
+    public function getBalance($livePrice, $boughtPrice)
+    {
+        $cryptoService = new CryptoService();
+        return $cryptoService->getBilance($livePrice, $boughtPrice);
     }
 
     public function test()

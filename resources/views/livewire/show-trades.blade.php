@@ -11,7 +11,7 @@
                         <!-- currency -->
                         <div class="block-box
                         @if(!$trade['domAttributes']['showCollective'])
-                            {{ $trade['domAttributes']['class'] }}
+                        {{ $trade['domAttributes']['class'] }}
                         @endif">
                             <div class="block as-column">
                                 <div class="block-child">
@@ -26,7 +26,7 @@
                         <!-- crypto amount -->
                         <div class="block-box
                         @if(!$trade['domAttributes']['showCollective'])
-                            {{ $trade['domAttributes']['class'] }}
+                        {{ $trade['domAttributes']['class'] }}
                         @endif">
                             <div class="block">
                                 <div class="block-child seperation">Amount</div>
@@ -37,7 +37,7 @@
                         <!-- current price -->
                         <div class="block-box
                         @if(!$trade['domAttributes']['showCollective'])
-                            {{ $trade['domAttributes']['class'] }}
+                        {{ $trade['domAttributes']['class'] }}
                         @endif">
                             <div class="block">
                                 <div class="block-child seperation">
@@ -45,13 +45,17 @@
                                 </div>
                                 <div class="block-child seperation">
                             <span>
-                                {!! round($trade['live']['balance']['percentage'],2) !!}%
+                                @if(isset($trade['live']['balance']['percentage']))
+                                    {!! round($trade['live']['balance']['percentage'],2) !!}%
+                                @endif
                             </span>
                                 </div>
                                 <div class="block-child seperation">Price</div>
                                 <div class="block-child seperation">
                             <span>
-                                {!!  round($trade['live']['price'],2) * $trade['summed'] !!}€
+                                @if(isset($trade['live']['balance']['percentage']))
+                                    {!!  round($trade['live']['price'],2) * $trade['summed'] ?? null !!}€
+                                @endif
                             </span>
                                 </div>
                             </div>
@@ -60,7 +64,7 @@
                         <!-- action button -->
                         <div class="card-block-actions
                         @if(!$trade['domAttributes']['showCollective'])
-                            {{ $trade['domAttributes']['class'] }}
+                        {{ $trade['domAttributes']['class'] }}
                         @endif">
                             {{-- Edit --}}
                             @if(!$trade['isCollective'])
