@@ -14,11 +14,17 @@ class Trade extends Model
         'cryptocurrency_id',
         'currency-single-price',
         'total-currency',
-        'order-day'
+        'order-day',
+        'location_id'
     ];
 
     public function cryptocurrency()
     {
         return $this->belongsTo(Cryptocurrency::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }
