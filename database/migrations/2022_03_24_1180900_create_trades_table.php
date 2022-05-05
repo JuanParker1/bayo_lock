@@ -19,9 +19,11 @@ class CreateTradesTable extends Migration
             $table->decimal('currency-single-price',8,6);
             $table->decimal('total-currency',8,6);
             $table->string('order-day');
+            $table->unsignedInteger('location_id');
             $table->timestamps();
 
             $table->foreign('cryptocurrency_id')->references('id')->on('cryptocurrencies');
+            $table->foreign('location_id')->references('id')->on('locations');
         });
     }
 
