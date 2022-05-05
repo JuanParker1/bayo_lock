@@ -33,7 +33,7 @@
                         </div>
                         <div class="collective-children body">
                             <span class="full-width" wire:click="openModal('{{ $element['id'] }}')"></span>
-                            Binance
+                            {{ $element->location->name }}
                         </div>
 
                     </div>

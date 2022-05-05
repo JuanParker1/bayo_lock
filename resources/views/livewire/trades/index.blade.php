@@ -96,12 +96,12 @@
                 </div>
                 <div>
                     @if($trade['domAttributes']['showCollective'] == true)
-                        <livewire:show-trade-childern :ids="$trade['collectiveIds']"
+                        <livewire:trades.show :ids="$trade['collectiveIds']"
                                                       :wire:key="'trade-viewer-'.$trade['cryptoId']"/>
                     @endif
                 </div>
             @endforeach
-            <button wire:click.prevent="test">test!</button>
         </section>
     @endif
+    <button wire:click="test">test</button>
 </div>

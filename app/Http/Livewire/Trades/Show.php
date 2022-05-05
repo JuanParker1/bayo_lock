@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Trades;
 
 use App\Models\Trade;
 use Livewire\Component;
 
-class ShowTradeChildern extends Component
+class Show extends Component
 {
     public $ids;
     public $collective;
@@ -26,6 +26,6 @@ class ShowTradeChildern extends Component
 
     public function render()
     {
-        return view('livewire.show-trade-childern');
+        return view('livewire.trades.show');
     }
 }

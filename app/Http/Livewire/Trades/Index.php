@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Trades;
 
 use App\Models\Trade;
 use App\Services\CryptoService;
 use Livewire\Component;
 
-class ShowTrades extends Component
+class Index extends Component
 {
 
     public $trades;
@@ -37,7 +37,7 @@ class ShowTrades extends Component
             $this->collapseClasses[$key] = $trade['class'];
         }
 
-        $this->refreshPrices();
+        if ($this->trades) $this->refreshPrices();
     }
 
     public function refreshPrices()
@@ -60,14 +60,14 @@ class ShowTrades extends Component
     public function extend($cryptoId)
     {
         $trade = &$this->trades[$cryptoId];
-        $trade['domAttributes']['showCollective'] = $trade['domAttributes']['showCollective'] == true ? false : true;
+        $trade['domAttributes']['showCollective'] = !($trade['domAttributes']['showCollective'] == true);
     }
 
     public function delete($id, $cryptoId = null)
     {
         $idList = explode(',', $id);
 
-        $model = Trade::find($idList);
+        $model = Trade::query()->find($idList);
         $model->each->delete();
 
         // refresh if it is possible
@@ -100,7 +100,6 @@ class ShowTrades extends Component
 
     public function openModal($type, $cryptoId, $tradeId = null)
     {
-
         if ($type === 'info') {
             $trade = $this->trades[$cryptoId];
 
@@ -108,6 +107,7 @@ class ShowTrades extends Component
                 $trades = Trade::find($tradeId);
                 $trade['currencySinglePrice'] = $trades['currency-single-price'];
                 $trades['balance'] = $this->getBalance($trade['live']['price'], ($trades['currency-single-price'] ?? $trade['currencySinglePrice']));
+                $trade['id'] = $trades->id;
             }
 
             $this->emit('openModal', 'trade-modal', [
@@ -182,7 +182,7 @@ class ShowTrades extends Component
 
     public function render()
     {
-        return view('livewire.show-trades');
+        return view('livewire.trades.index');
     }
 }
 
