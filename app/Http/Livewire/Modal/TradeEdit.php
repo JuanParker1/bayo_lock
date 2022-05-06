@@ -6,7 +6,7 @@ use App\Models\Location;
 use App\Models\Trade;
 use LivewireUI\Modal\ModalComponent;
 
-class UpdateTrade extends ModalComponent
+class TradeEdit extends ModalComponent
 {
     public $tradeId;
     public $trade;
@@ -65,14 +65,14 @@ class UpdateTrade extends ModalComponent
 
     public function render()
     {
-//        if ($this->trade['total-currency'] < $this->formSummed) {
-//            $this->formMessageSummed = 'it has to be smaller than the total value!';
-//        }
-//
-//        if ($this->formSummed > 0) {
-//            $this->sum = $this->trade['total-currency'] - $this->formSummed;
-//        }
+        if ($this->trade['total-currency'] < $this->formSummed) {
+            $this->formMessageSummed = 'it has to be smaller than the total value!';
+        }
 
-        return view('livewire.modal.update-trade');
+        if ($this->formSummed > 0) {
+            $this->sum = $this->trade['total-currency'] - $this->formSummed;
+        }
+
+        return view('livewire.modal.trade-edit');
     }
 }

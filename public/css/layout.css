@@ -58,3 +58,11 @@
 .xx-large {
     font-size: xx-large;
 }
+
+.action {
+    cursor: pointer;
+}
+
+.action :hover {
+    color: var(--main-blue-color);
+}

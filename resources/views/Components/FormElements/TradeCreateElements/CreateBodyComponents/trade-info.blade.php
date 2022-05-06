@@ -1,4 +1,3 @@
-{{--<div class="other-inputs-values">--}}
 <div class="create-container h-full">
     {{--  header  --}}
     @include('/Components/FormElements/TradeCreateElements/trade-header-user-guid',
@@ -7,8 +6,9 @@
                 'middle' => 'details for',
                 'bottom' => $coin["name"]
             ])
+    {{--  search header result  --}}
     <div class="search-result"></div>
-    {{--    <div class="trade-input-area trade-search-area shadow">--}}
+
     <div class="trade-search-area">
         <div class="filler">
             <div class="item seperation">

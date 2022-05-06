@@ -25,7 +25,7 @@ class Create extends Component
     public $currencyTotal;
 
     // NEXT
-    private $availableSites = ['trade-search', 'trade-info', 'market-wallet'];
+    private $availableSites = ['trade-search', 'trade-info', 'trade-location-place'];
     public $movementSteps = 0;
     public $pagination = [
         'next' => null,
@@ -55,11 +55,13 @@ class Create extends Component
      */
     public function getCoin($value)
     {
-        if (strlen($value) > 2) {
-            $value = urlencode($value);
-            $coinResults = file_get_contents("https://api.coingecko.com/api/v3/search?query={$value}");
-            return array_slice(json_decode($coinResults)->coins, 0, 5);
-        }
+        if (strlen($value) < 2) return null;
+
+        $value = urlencode($value);
+        $coinResults = file_get_contents("https://api.coingecko.com/api/v3/search?query={$value}");
+
+        return array_slice(json_decode($coinResults)->coins, 0, 5);
+
     }
 
     /**
@@ -68,12 +70,12 @@ class Create extends Component
      */
     public function getMarketOrWallet($value)
     {
-        if (strlen($value) > 2) {
-            $value = urlencode($value);
-            $coinResults = file_get_contents("https://api.coingecko.com/api/v3/search?query={$value}");
+        if (strlen($value) < 2) return null;
 
-            return array_slice(json_decode($coinResults)->exchanges, 0, 5);
-        }
+        $value = urlencode($value);
+        $coinResults = file_get_contents("https://api.coingecko.com/api/v3/search?query={$value}");
+
+        return array_slice(json_decode($coinResults)->exchanges, 0, 5);
     }
 
     public function back()
@@ -95,7 +97,7 @@ class Create extends Component
         $this->search = '';
         $this->results = [];
 
-        $this->movementSteps = $this->movementSteps +1;
+        $this->movementSteps = $this->movementSteps + 1;
         $index = $this->movementSteps;
 
         $this->pagination['next'] = $index + 1 < count($this->availableSites) ? $this->availableSites[$index + 1] : null;

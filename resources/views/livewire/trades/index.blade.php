@@ -1,5 +1,5 @@
 <div>
-    @if($trades !== null)
+    @if(!empty($trades))
         <section wire:poll.60s="refreshPrices">
 
             @foreach($trades as $trade)
@@ -102,6 +102,12 @@
                 </div>
             @endforeach
         </section>
+    @else
+        <section>
+            <center>
+                <h1>it's empty here create your trade <a href="/contract/{!! $contractId !!}/create-trade" class="chapter-link padding-25 no-mark">here</a></h1>
+
+            </center>
+        </section>
     @endif
-    <button wire:click="test">test</button>
 </div>

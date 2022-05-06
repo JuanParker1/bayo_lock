@@ -10,6 +10,7 @@ class Index extends Component
 {
 
     public $trades;
+    public $contractId;
     public $tradesKeys = '';
     public $isCollective;
     public $tradesLivePrices = [];
@@ -110,7 +111,7 @@ class Index extends Component
                 $trade['id'] = $trades->id;
             }
 
-            $this->emit('openModal', 'trade-modal', [
+            $this->emit('openModal', 'modal.trade-info', [
                 'trade' => $trade,
                 'liveBalance' => $trades['balance'] ?? $this->tradesLiveBalance[$cryptoId],
                 'livePrice' => $this->tradesLivePrices[$cryptoId]['eur'],
@@ -118,7 +119,7 @@ class Index extends Component
             ]);
 
         } elseif ($type === 'edit') {
-            $this->emit('openModal', 'update-trade', [
+            $this->emit('openModal', 'modal.trade-edit', [
                 'tradeId' => $this->trades[$cryptoId]['id'],
                 'isCollective' => $this->trades[$cryptoId]['isCollective']
             ]);
@@ -127,6 +128,7 @@ class Index extends Component
 
     public function refreshTrades($cryptoId)
     {
+        if (empty($this->trades)) return null;
 
         $cryptoService = new CryptoService();
         $ids = $this->trades[$cryptoId]['collectiveIds'];

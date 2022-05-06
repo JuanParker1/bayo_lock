@@ -19,22 +19,21 @@
                             <div class="modal-action">
                                 <div class="block">
 
+                                    {{-- edit --}}
+                                    <div class="block-child seperation ">
+                                        <div class="xx-large"
+                                             wire:click="edit('{{ $trade["cryptoId"] }}')">
+                                            <i class="bi bi-plus-slash-minus action"></i>
+                                        </div>
+                                    </div>
+
                                     {{-- Bin --}}
                                     <div class="block-child seperation">
-                                        <div class="action xx-large"
+                                        <div class="xx-large"
                                         wire:click.prevent="delete" >
-                                            <i class="bi bi-trash3"></i>
+                                            <i class="bi bi-trash3 action"></i>
                                         </div>
                                     </div>
-
-                                    {{-- edit --}}
-                                    <div class="block-child seperation">
-                                        <div class="action xx-large"
-                                             wire:click="openModal('edit','{{ $trade["cryptoId"] }}')">
-                                            <i class="bi bi-plus-slash-minus"></i>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         @endif

@@ -56,7 +56,7 @@
                                         <div class="edit-body-text large">
                                             {{ $trade['total-currency'] }}
                                             @if($formSummed > 0)
-                                                <sub>it remains {{ $trade['total-currency'] }}</sub>
+                                                <sub>it remains {{ $sum }}</sub>
                                             @endif
                                         </div>
                                     </div>

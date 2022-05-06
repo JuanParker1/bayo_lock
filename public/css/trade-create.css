@@ -1,10 +1,12 @@
+@import "color.css";
+
 .create-container {
     display: grid;
     grid-template-areas:
                 'result result result result'
                 '. heade heade .'
-                '. search search .';
-    grid-template-rows: 20% 50% 30%;
+                'search search search search'
+                'action action action action';
     gap: 20px;
 }
 
@@ -96,7 +98,6 @@
 
 .trade-header-icon-container .text {
     flex-grow: 1;
-    text-align: left;
     align-self: center;
 }
 
@@ -117,7 +118,8 @@
 .trade-search-area input {
     width: 75%;
     border-radius: 5px;
-    border: 1px solid;
+    border-block-style: none;
+    border-color: var(--main-blue-color);
     line-height: 45px;
     text-align: center;
 }
@@ -183,9 +185,9 @@
     border-radius: 5px;
     width: 75%;
     height: 40%;
-    color: blue;
+    color: var(--main-blue-color);
     padding: 15px;
-    box-shadow: 0px 3px 16px 0px lightgrey;
+    /*box-shadow: 0px 3px 16px 0px lightgrey;*/
     border-block-style: none;
 }
 
@@ -195,7 +197,12 @@
 
 .trade-btn-area {
     grid-area: action;
-    height: 20vh;
+    height: 13vh;
+}
+
+/* action */
+.action-btn-area{
+    grid-area: action;
 }
 
 /* default color */
