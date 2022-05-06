@@ -40,7 +40,16 @@
                         @endif
 
                         {{-- Content --}}
-                        <div class="modal-content">content</div>
+                        <div class="modal-content">
+                            <div class="block">
+                                <div class="block-child seperation">location</div>
+                                <div class="block-child seperation">
+                                    <span>
+                                        {!!  $model->location->name !!}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="modal-currentPrice">
                             <div class="block">

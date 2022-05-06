@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Modal;
 
+use App\Models\Location;
 use App\Models\Trade;
 use LivewireUI\Modal\ModalComponent;
 
@@ -16,6 +17,7 @@ class UpdateTrade extends ModalComponent
     // FORM ELEMENTS
     public $formOrderDay;
     public $formSummed = 0;
+    public $formLocation;
 
     // ERROR MESSAGE
     public $formMessageSummed;
@@ -40,16 +42,25 @@ class UpdateTrade extends ModalComponent
             $trade['order-day'] = $this->formOrderDay;
         }
 
+        if (!empty($this->formLocation)) {
+            $location = Location::query()->firstOrCreate([
+                'name' => $this->formLocation,
+            ]);
+
+            $trade['location_id'] = $location->id;
+        }
+
         $trade['total-currency'] = $this->trade['total-currency'] - $this->formSummed;
 
         $trade->update();
 
         // if total-currency is equal to zero, delete whole trade.
-        if ($trade['total-currency'] === 0) {
-            $trade->delete();
+        if ($trade['total-currency'] <= 0) {
+//            $trade->delete();
+            $this->emitTo('trades.index','delete', $trade['id'], $trade->cryptocurrency->symbol);
         }
 
-        $this->emitUp('closeEditModal');
+        $this->emit('closeModal', true);
     }
 
     public function render()
@@ -62,6 +73,6 @@ class UpdateTrade extends ModalComponent
 //            $this->sum = $this->trade['total-currency'] - $this->formSummed;
 //        }
 
-        return view('livewire.update-trade');
+        return view('livewire.modal.update-trade');
     }
 }

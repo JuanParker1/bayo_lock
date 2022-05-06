@@ -37,9 +37,10 @@
                                             <i class="bi bi-pen"></i>
                                         </div>
                                         <div class="edit-body-text large item-input">
-                                            <input wire:model="formOrderDay" type="datetime-local" value="{{ $trade['order-day'] }}">
+                                            <input wire:model="formOrderDay" type="datetime-local"
+                                                   value="{{ $trade['order-day'] }}">
                                             @if($formMessageOrderDay)
-                                                <livewire:form-message :message="$formMessageSummed" />
+                                                <livewire:form-message :message="$formMessageSummed"/>
                                             @endif
                                         </div>
                                     </div>
@@ -66,9 +67,35 @@
                                             <sub>enter the number which has to be reduced</sub>
                                         </div>
                                         <div class="edit-body-text large item-input">
-                                            <input wire:model="formSummed" inputmode="numeric" type="number" step="any" placeholder="{{ $trade['total-currency'] }}">
+                                            <input wire:model="formSummed" inputmode="numeric" type="number" step="any"
+                                                   placeholder="{{ $trade['total-currency'] }}">
                                             @if($formMessageSummed)
-                                                <livewire:form-message :message="$formMessageSummed" />
+                                                <livewire:form-message :message="$formMessageSummed"/>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Location --}}
+                                <div class="modal-body-tr">
+                                    <div class="modal-edit-body">
+                                        <div class="edit-body-icon x-large">
+                                            <i class="bi bi-compass"></i>
+                                        </div>
+                                        <div class="edit-body-text large">
+                                            Location
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-edit-body">
+                                        <div class="edit-body-icon x-large">
+                                            <i class="bi bi-pen"></i>
+                                        </div>
+                                        <div class="edit-body-text large item-input">
+                                            <input wire:model="formLocation" type="text"
+                                                   placeholder="{{ $trade->location->name }}">
+                                            @if($formMessageOrderDay)
+                                                <livewire:form-message :message="$formMessageSummed"/>
                                             @endif
                                         </div>
                                     </div>
@@ -79,7 +106,9 @@
 
                         <div class="modal-footer trade-btn-area">
                             <div class="item">
-                                <button wire:click.prevent="$emitUp('closeEditModal')" class="btn-action btn-back">return</button>
+                                <button wire:click.prevent="$emit('closeModal', true)" class="btn-action btn-back">
+                                    return
+                                </button>
                             </div>
                             <div class="item">
                                 <button class="btn-action btn-store">store</button>
