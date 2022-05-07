@@ -17,7 +17,7 @@ class Create extends Component
     public $location;
     public $results = [];
     public $contractId;
-    public $switchScreen = False;
+    public $message;
 
     // FROM named elements
     public $orderDay;
@@ -59,6 +59,12 @@ class Create extends Component
 
         $value = urlencode($value);
         $coinResults = file_get_contents("https://api.coingecko.com/api/v3/search?query={$value}");
+
+        if (empty(json_decode($coinResults)->coins)) {
+            $this->message = 'No results found...';
+            $this->results = [];
+            return [];
+        };
 
         return array_slice(json_decode($coinResults)->coins, 0, 5);
 
@@ -145,9 +151,9 @@ class Create extends Component
             $this->results = $this->getCoin($this->search);
         }
 
-        if (strlen($this->market) > 2 && ($this->location['name'] ?? false) !== $this->market) {
-            $this->results = $this->getMarketOrWallet($this->market);
-        }
+//        if (strlen($this->market) > 2 && ($this->location['name'] ?? false) !== $this->market) {
+//            $this->results = $this->getMarketOrWallet($this->market);
+//        }
 
         return view('livewire.trades.create', ['results' => $this->results ?? null]);
     }
