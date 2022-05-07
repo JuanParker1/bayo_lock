@@ -16,8 +16,8 @@ class CreateTradesTable extends Migration
         Schema::create('trades', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('cryptocurrency_id');
-            $table->decimal('currency-single-price',8,6);
-            $table->decimal('total-currency',8,6);
+            $table->decimal('currency-single-price',14,6);
+            $table->decimal('total-currency',14,6);
             $table->string('order-day');
             $table->unsignedInteger('location_id');
             $table->timestamps();
