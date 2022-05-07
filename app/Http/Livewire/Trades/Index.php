@@ -18,7 +18,7 @@ class Index extends Component
 
     public $collapseClasses;
 
-    protected $listeners = ['openModal', 'delete'];
+    protected $listeners = ['openModal', 'delete', 'refreshTradesViaId'];
 
     public function mount()
     {
@@ -132,7 +132,7 @@ class Index extends Component
 
         $cryptoService = new CryptoService();
         $ids = $this->trades[$cryptoId]['collectiveIds'];
-        $trades = Trade::find($ids);
+        $trades = Trade::query()->find($ids);
 
         // if single currency has deleted then nothing is there so exit
         if (empty($trades[0])) return null;
@@ -140,7 +140,7 @@ class Index extends Component
         // if something is remains then create basis structure
         $result = $cryptoService->groupByCryptoId($trades);
         if (!$result) return $this->trades[$cryptoId];
-
+        
         // keep going and extend the needed properties like, img, class etc.
         $result[$cryptoId] = $this->extendTradesProperties($result[$cryptoId]);
 
@@ -174,6 +174,16 @@ class Index extends Component
     {
         $cryptoService = new CryptoService();
         return $cryptoService->getBilance($livePrice, $boughtPrice);
+    }
+
+    public function refreshTradesViaId($cryptoId)
+    {
+        $result = $this->refreshTrades($cryptoId);
+
+        if ($result) {
+            $this->trades[$cryptoId] = $result;
+            $this->refreshPrices();
+        }
     }
 
     public function test()

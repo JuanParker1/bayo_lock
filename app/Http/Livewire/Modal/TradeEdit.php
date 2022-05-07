@@ -52,12 +52,13 @@ class TradeEdit extends ModalComponent
 
         $trade['total-currency'] = $this->trade['total-currency'] - $this->formSummed;
 
-        $trade->update();
+        $hasUpdated = $trade->update();
+
+        if ($hasUpdated) $this->emitTo('trades.index', 'refreshTradesViaId', $trade->cryptocurrency['crypto_id']);
 
         // if total-currency is equal to zero, delete whole trade.
         if ($trade['total-currency'] <= 0) {
-//            $trade->delete();
-            $this->emitTo('trades.index','delete', $trade['id'], $trade->cryptocurrency->symbol);
+            $this->emitTo('trades.index', 'delete', $trade['id'], $trade->cryptocurrency->symbol);
         }
 
         $this->emit('closeModal', true);
