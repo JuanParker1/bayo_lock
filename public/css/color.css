@@ -1,0 +1,6 @@
+:root{
+    --main-blue-color: #510ff8;
+}
+.blue {
+    color: var(--main-blue-color);
+}
