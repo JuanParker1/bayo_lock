@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserPreferncesTable extends Migration
+class CreateUserPreferencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateUserPreferncesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_prefernces', function (Blueprint $table) {
+        Schema::create('user_preferences', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->json('preferences');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
