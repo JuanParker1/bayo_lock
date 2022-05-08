@@ -54,7 +54,7 @@
                                 <div class="block-child seperation">
                             <span>
                                 @if(isset($trade['live']['balance']['percentage']))
-                                    {!!  round($trade['live']['price'],2) * $trade['summed'] ?? null !!}€
+                                    {!!  round($trade['live']['price'],2) * $trade['summed'] ?? null !!} {!! $preferredFiat === 'eur' ? '€' : '$' !!}
                                 @endif
                             </span>
                                 </div>
@@ -110,4 +110,5 @@
             </center>
         </section>
     @endif
+    <button wire:click='test'>show inneres</button>
 </div>

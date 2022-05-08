@@ -55,7 +55,7 @@
                                 <div class="block-child seperation">Bought price</div>
                                 <div class="block-child seperation">
                                     <span>
-                                        {!!  round($trade['currencySinglePrice'],2) !!}€
+                                        {!!  round($trade['live']['price'] / $trade['summed'],2) !!} {!! $preferredFiatSymbol !!}
                                     </span>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                 <div class="block-child seperation">
                                     <span>
                                         @if(isset($livePrice))
-                                        {!!  round($livePrice   ,2) !!}€
+                                        {!!  round($livePrice   ,2) !!} {!! $preferredFiatSymbol !!}
                                         @endif
                                     </span>
                                 </div>
