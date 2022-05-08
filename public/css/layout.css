@@ -66,3 +66,17 @@
 .action :hover {
     color: var(--main-blue-color);
 }
+
+/* WIDTH */
+.width-10-percent {
+    width: 10vw;
+}
+
+.highlight {
+    color: var(--main-blue-color);
+    text-decoration: underline;
+}
+
+.discreet {
+    color: darkgrey;
+}
