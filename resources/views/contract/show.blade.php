@@ -10,7 +10,9 @@
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/button.css') }}" rel="stylesheet">
     {{--    <livewire:show-currency :contract_id="$contract->id"/>--}}
-
+    <div>
+        <livewire:fiat />
+    </div>
     <div class="trade-header">
         <div class="block">
             <a href="/contract/{!! $contract->id !!}/create-trade" class="chapter-link padding-25 no-mark">
@@ -21,6 +23,7 @@
                     create
                 </div>
             </a>
+
         </div>
         {{--        <a href="/contract/{!! $contract->id !!}/create-trade">create new trade</a>--}}
     </div>
