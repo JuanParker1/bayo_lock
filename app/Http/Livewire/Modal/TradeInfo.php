@@ -11,6 +11,7 @@ class TradeInfo extends ModalComponent
     public $liveBalance;
     public $livePrice;
     public $showTradeInfo = false;
+    public $preferredFiatSymbol;
     public $model;
 
     public function mount()

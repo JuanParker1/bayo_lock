@@ -15,10 +15,11 @@ class Index extends Component
     public $isCollective;
     public $tradesLivePrices = [];
     public $tradesLiveBalance = [];
+    public $preferredFiat;
 
     public $collapseClasses;
 
-    protected $listeners = ['openModal', 'delete', 'refreshTradesViaId'];
+    protected $listeners = ['openModal', 'delete', 'refreshTradesViaId', 'refreshFiat'];
 
     public function mount()
     {
@@ -38,6 +39,7 @@ class Index extends Component
             $this->collapseClasses[$key] = $trade['class'];
         }
 
+        $this->preferredFiat = $this->emitTo('fiat', 'getFiat') ?? 'eur';
         if ($this->trades) $this->refreshPrices();
     }
 
@@ -47,10 +49,16 @@ class Index extends Component
         foreach (explode(',', $this->tradesKeys) as $key) {
             $trade = &$this->trades[$key];
             $cryptoId = $trade['cryptoId']; // kann das weg?
-            $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key]['eur'], $trade['currencySinglePrice']);
+            $this->tradesLiveBalance[$key] = (new CryptoService())->getBilance($this->tradesLivePrices[$key][$this->preferredFiat], $trade['currencySinglePrice']);
             $trade['live']['balance'] = $this->tradesLiveBalance[$key];
-            $trade['live']['price'] = $this->tradesLivePrices[$key]['eur'];
+            $trade['live']['price'] = $this->tradesLivePrices[$key][$this->preferredFiat];
         }
+    }
+
+    public function refreshFiat($fiat)
+    {
+        $this->preferredFiat = $fiat;
+        $this->refreshPrices();
     }
 
     private function getCurrencyPrices()
@@ -114,8 +122,9 @@ class Index extends Component
             $this->emit('openModal', 'modal.trade-info', [
                 'trade' => $trade,
                 'liveBalance' => $trades['balance'] ?? $this->tradesLiveBalance[$cryptoId],
-                'livePrice' => $this->tradesLivePrices[$cryptoId]['eur'],
+                'livePrice' => $this->tradesLivePrices[$cryptoId][$this->preferredFiat],
                 'showTradeInfo' => true,
+                'preferredFiatSymbol' => $this->preferredFiat == 'euro' ? '€' : '$',
             ]);
 
         } elseif ($type === 'edit') {
@@ -140,7 +149,7 @@ class Index extends Component
         // if something is remains then create basis structure
         $result = $cryptoService->groupByCryptoId($trades);
         if (!$result) return $this->trades[$cryptoId];
-        
+
         // keep going and extend the needed properties like, img, class etc.
         $result[$cryptoId] = $this->extendTradesProperties($result[$cryptoId]);
 
@@ -190,6 +199,7 @@ class Index extends Component
     {
         dump($this->trades);
         dump($this->tradesKeys);
+        dump($this->preferredFiat);
     }
 
     public function render()
