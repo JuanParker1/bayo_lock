@@ -47,7 +47,7 @@ class CryptoService
      * @return array
      * @throws \Exception
      */
-    public function getCryptoPrice($cryptocurrencies, $fiat = 'eur')
+    public function getCryptoPrice($cryptocurrencies, $fiat = 'eur,usd')
     {
         return $this->client->simple()->getPrice($cryptocurrencies, $fiat);
     }
