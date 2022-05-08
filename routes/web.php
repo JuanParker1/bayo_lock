@@ -43,3 +43,7 @@ Route::get('/deposit/create', [App\Http\Controllers\DepositsController::class, '
 Route::post('/deposit/create', [App\Http\Controllers\DepositsController::class, 'store']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

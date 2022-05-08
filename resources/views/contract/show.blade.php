@@ -13,8 +13,10 @@
     <div>
         <livewire:fiat />
     </div>
+
     <div class="trade-header">
         <div class="block">
+
             <a href="/contract/{!! $contract->id !!}/create-trade" class="chapter-link padding-25 no-mark">
                 <div class="block-child x-large">
                     <i class="bi bi-plus-lg"></i>
@@ -25,7 +27,6 @@
             </a>
 
         </div>
-        {{--        <a href="/contract/{!! $contract->id !!}/create-trade">create new trade</a>--}}
     </div>
 
     <livewire:trades.index :trades="$trades" :contractId="$contract->id"/>
