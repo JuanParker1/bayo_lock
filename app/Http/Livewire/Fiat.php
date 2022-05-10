@@ -18,7 +18,6 @@ class Fiat extends Component
         $this->preferredFiat = $fiat;
         $this->emitTo('trades.index', 'refreshFiat', $this->preferredFiat);
         // speichere die ausgewählte fiat
-        dump(Auth::user());
     }
 
     public function getFiat()
