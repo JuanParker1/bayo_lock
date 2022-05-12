@@ -22,6 +22,34 @@
 
 }
 
+/* CASE */
+.case {
+    width: 40vw;
+}
+
+/* FILLER */
+.filler {
+    height: 100%;
+    display: flex;
+    width: 100%;
+}
+
+.filler .item {
+    height: 75%;
+    flex: 1;
+    text-align: center;
+    align-self: center;
+}
+
+.center {
+    justify-content: center;
+    justify-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
 .seperation {
     margin: auto;
 }
@@ -59,6 +87,14 @@
     font-size: xx-large;
 }
 
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
 .action {
     cursor: pointer;
 }
@@ -79,4 +115,35 @@
 
 .discreet {
     color: darkgrey;
+}
+
+/* DISTANCE */
+.margin-top-25 {
+    margin-top: 25px;
+}
+
+.margin-bottom-25 {
+    margin-bottom: 25px;
+}
+
+/* FLEX */
+.flex {
+    display: flex;
+}
+
+.one {
+    flex: 1;
+}
+
+.two {
+    flex: 2;
+}
+
+/**/
+.delete:hover{
+    color: orangered;
+}
+
+.extend:hover{
+    color: var(--main-blue-color);
 }
