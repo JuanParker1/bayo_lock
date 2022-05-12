@@ -14,10 +14,9 @@ class Fiat extends Component
     public function toggle($fiat)
     {
         if ($this->preferredFiat === $fiat) return null;
-        // die nicht ausgesuchte bitte in grau hinterlegen, die ausgesuchte in blau
+
         $this->preferredFiat = $fiat;
         $this->emitTo('trades.index', 'refreshFiat', $this->preferredFiat);
-        // speichere die ausgewählte fiat
     }
 
     public function getFiat()
