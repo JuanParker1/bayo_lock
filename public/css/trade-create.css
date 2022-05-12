@@ -170,13 +170,6 @@
     border-left: 1px solid lightblue;
 }
 
-.filler .item {
-    height: 75%;
-    flex: 1;
-    text-align: center;
-    align-self: center;
-}
-
 .item-label, .item-input {
     height: 50%;
 }
@@ -212,12 +205,6 @@
 
 .red {
     color: orangered;
-}
-
-.filler {
-    height: 100%;
-    display: flex;
-    width: 100%;
 }
 
 .shadow {
