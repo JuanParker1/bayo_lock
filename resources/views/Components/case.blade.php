@@ -21,7 +21,7 @@
     <div class="case-footer text-center margin-top-25 padding-25">
 
         <div class="case-footer-item extend">
-            <a class="case-anchor flex" href="/contract/{!! $contract->id !!}/extend">
+            <a class="case-anchor flex" href="/contract/{!! $investor->id !!}/extend/{!! $contract->id !!}">
                 <div class="one">
                     <i class="bi bi-plus"></i>
                 </div>
