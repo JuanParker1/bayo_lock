@@ -87,11 +87,11 @@
     font-size: xx-large;
 }
 
-.text-left{
+.text-left {
     text-align: left;
 }
 
-.text-right{
+.text-right {
     text-align: right;
 }
 
@@ -139,11 +139,19 @@
     flex: 2;
 }
 
+.flex-1 {
+    flex: 1
+}
+
+.flex-2 {
+    flex: 2
+}
+
 /**/
-.delete:hover{
+.delete:hover {
     color: orangered;
 }
 
-.extend:hover{
+.extend:hover {
     color: var(--main-blue-color);
 }
