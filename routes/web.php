@@ -32,9 +32,9 @@ Route::get('/investor/{id}/create-contract', [App\Http\Controllers\InvestorContr
 // Contracts
 Route::get('/contract/create', [App\Http\Controllers\ContractController::class, 'create']);
 Route::get('/contract/{contract_id}', [App\Http\Controllers\ContractController::class, 'show']);
+Route::get('/contract/{investor_id}/extend/{contract_id}', [App\Http\Controllers\ContractController::class, 'extend']);
 
 Route::delete('/contract/{contract_id}/{investor_id}', [App\Http\Controllers\ContractController::class, 'destory']);
-Route::get('/contract/{contract_id}/{investor_id}/extend', [App\Http\Controllers\ContractController::class, 'extend']);
 Route::get('/contract/{contract_id}/create-trade', [App\Http\Controllers\ContractController::class, 'createTrade']);
 Route::post('/contract/{contract_id}/create-trade', [App\Http\Controllers\ContractController::class, 'storeTrade']);
 
